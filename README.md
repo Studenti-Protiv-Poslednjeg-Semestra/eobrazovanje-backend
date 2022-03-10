@@ -1,5 +1,7 @@
 # eObrazovanje - backend
 
+## Zadatak
+
 Tehnologije i sistemi eObrazovanja Projektni zadatak 2020
 Implementirati softversku aplikaciju za administraciju nastavnog procesa u obrazovnoj instituciji. Aplikacija treba da podrži administraciju:
 *	Učenika
@@ -17,12 +19,16 @@ Implementirati softversku aplikaciju za administraciju nastavnog procesa u obraz
 
 Aplikaciju implementirati kao klijent-server veb aplikaciju. Serverski deo aplikacije realizovati korišćenjem Java platforme i Spring radnog okvira. Perzistenciju podataka realizovati korišćenjem relacione baze podataka uz oslonac na objektno relaciono mapiranje. Serverski deo aplikacije treba da obezbedi REST API. Klijentski deo aplikacije realizovati kao SPA (Single Page Application) aplikaciju korišćenjem standardnih klijentskih veb tehnologija i Angular  radnog okvira. 
 
+## Tech
 
+Java 17
 
+MySql 8.0.28
 
+## Fajlovi
 
-(Šeme i dijagrami)[https://lucid.app/folder/invitations/accept/inv_d17238fa-3da8-4e40-9479-871f8543f7e6]
+[Šeme i dijagrami](https://lucid.app/folder/invitations/accept/inv_d17238fa-3da8-4e40-9479-871f8543f7e6)
 
-(Beleske i pitanja)[https://docs.google.com/document/d/114WcX0-bpC6r8iahIMi4ki3glbc9qCxJ053z8Tonhh0/edit?usp=sharing]
+[Beleske i pitanja](https://docs.google.com/document/d/114WcX0-bpC6r8iahIMi4ki3glbc9qCxJ053z8Tonhh0/edit?usp=sharing)
 
-(User stories)[https://docs.google.com/spreadsheets/d/1x83K29ZerPM_FhBMFrJy1cOL8ocXQkr0Qk317zJbrWM/edit?usp=sharing]
+[User stories](https://docs.google.com/spreadsheets/d/1x83K29ZerPM_FhBMFrJy1cOL8ocXQkr0Qk317zJbrWM/edit?usp=sharing)
