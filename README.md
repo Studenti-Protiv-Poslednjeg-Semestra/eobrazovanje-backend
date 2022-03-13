@@ -32,3 +32,5 @@ MySql 8.0.28
 [Beleske i pitanja](https://docs.google.com/document/d/114WcX0-bpC6r8iahIMi4ki3glbc9qCxJ053z8Tonhh0/edit?usp=sharing)
 
 [User stories](https://docs.google.com/spreadsheets/d/1x83K29ZerPM_FhBMFrJy1cOL8ocXQkr0Qk317zJbrWM/edit?usp=sharing)
+
+[Trello board](https://trello.com/b/qVV5ZTrF/eobrazovanje)
