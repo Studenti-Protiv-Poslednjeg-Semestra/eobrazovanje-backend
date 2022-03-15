@@ -52,7 +52,7 @@ public class Subject {
     private Set<Professor> professors = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    private Set<Responsibility> responsibilities = new LinkedHashSet<>();
+    private Set<ResponsibilityDefinition> responsibilityDefinitions = new LinkedHashSet<>();
 
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)

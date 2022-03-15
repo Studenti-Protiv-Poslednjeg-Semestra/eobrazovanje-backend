@@ -15,9 +15,6 @@ public class Responsibility {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
-    private ResponsibilityType responsibilityType;
-
     @Column
     private Integer points;
 
@@ -25,12 +22,11 @@ public class Responsibility {
     private String place;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
-
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "student_id")
     private Student student;
+
+    @ManyToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "responsibility_definition_id")
+    private ResponsibilityDefinition responsibilityDefinition;
 
 }

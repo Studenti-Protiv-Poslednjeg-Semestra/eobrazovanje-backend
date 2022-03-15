@@ -14,10 +14,11 @@ import java.util.Set;
 public class Student {
 
     @Id
-    @GeneratedValue
     private Long id;
 
-    @Embedded
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "id")
+    @MapsId
     private User user;
 
     @Min(0)

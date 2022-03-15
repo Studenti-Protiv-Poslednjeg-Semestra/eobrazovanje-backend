@@ -13,7 +13,6 @@ import java.util.Set;
 public class Professor {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
@@ -22,7 +21,9 @@ public class Professor {
             inverseJoinColumns = @JoinColumn(name = "subjects_id"))
     private Set<Subject> subjects = new java.util.LinkedHashSet<>();
 
-    @Embedded
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    @MapsId
     private User user;
 
 }

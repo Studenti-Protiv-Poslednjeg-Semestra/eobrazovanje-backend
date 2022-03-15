@@ -2,9 +2,12 @@ package com.ftn.studentservice.model;
 
 import javax.persistence.*;
 
-@Embeddable
+@Entity
 public class User {
 
+    @Id
+    @GeneratedValue
+    private Long id;
     @Column(nullable = false)
     private String firstName;
     @Column(nullable = false)
