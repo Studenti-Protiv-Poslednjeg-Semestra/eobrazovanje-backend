@@ -1,7 +1,17 @@
 package com.ftn.studentservice.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
+//End of lombok
 @Entity
 public class User {
 
@@ -18,7 +28,12 @@ public class User {
     private String password;
     @Column(nullable = false, unique = true)
     private String UCN;
-    @Enumerated
-    @Column(nullable = false)
-    private Role role;
+
+    //I commented out role because i feel like it
+    // is going to be redundant once we implement
+    // spring security and assign Authorities to the
+    // User - WLQMPEK
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private Role role;
 }

@@ -1,7 +1,16 @@
 package com.ftn.studentservice.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
+//End of lombok
 @Entity
 public class Document {
 

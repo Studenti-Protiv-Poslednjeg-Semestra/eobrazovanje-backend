@@ -1,8 +1,17 @@
 package com.ftn.studentservice.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
+//End of lombok
 @Entity
 public class ExamSchedule {
 

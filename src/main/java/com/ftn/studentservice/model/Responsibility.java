@@ -1,12 +1,15 @@
 package com.ftn.studentservice.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
 //End of lombok
 @Entity
 public class Responsibility {

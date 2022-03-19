@@ -1,8 +1,16 @@
 package com.ftn.studentservice.model;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
+//End of lombok
 @Entity
 public class ResponsibilityDefinition {
 
@@ -14,7 +22,7 @@ public class ResponsibilityDefinition {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column
     private ResponsibilityType responsibilityType;
 

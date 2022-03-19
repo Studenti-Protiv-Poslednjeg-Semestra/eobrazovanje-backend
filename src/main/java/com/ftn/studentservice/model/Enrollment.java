@@ -1,9 +1,18 @@
 package com.ftn.studentservice.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
+//@NoArgsConstructor
+@AllArgsConstructor
+//End of lombok
 @Entity
 public class Enrollment {
 
