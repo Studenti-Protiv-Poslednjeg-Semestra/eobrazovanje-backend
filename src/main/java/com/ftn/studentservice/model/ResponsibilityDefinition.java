@@ -2,6 +2,7 @@ package com.ftn.studentservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -28,6 +29,6 @@ public class ResponsibilityDefinition {
 
 
     @OneToMany(mappedBy = "responsibilityDefinition", orphanRemoval = true)
-    private Set<Responsibility> responsibilities = new java.util.LinkedHashSet<>();
+    private Set<Responsibility> responsibilities = new LinkedHashSet<>();
 
 }
