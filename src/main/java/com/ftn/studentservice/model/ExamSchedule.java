@@ -27,6 +27,9 @@ public class ExamSchedule {
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 
+    @Column
+    private String place;
+
     @OneToMany(mappedBy = "examSchedule", cascade = CascadeType.REFRESH)
     private Set<Exam> exams;
 
