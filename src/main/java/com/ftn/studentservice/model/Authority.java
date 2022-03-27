@@ -13,9 +13,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-//@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 //End of lombok
 @Entity
 public class Authority implements GrantedAuthority {

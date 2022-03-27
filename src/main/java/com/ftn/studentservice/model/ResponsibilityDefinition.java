@@ -2,6 +2,7 @@ package com.ftn.studentservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
