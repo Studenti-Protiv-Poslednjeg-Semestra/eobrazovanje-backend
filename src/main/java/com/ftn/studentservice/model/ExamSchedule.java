@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,5 +26,12 @@ public class ExamSchedule {
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
+
+    @OneToMany(mappedBy = "examSchedule", cascade = CascadeType.REFRESH)
+    Set<Exam> exams;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
+    @JoinColumn(name = "examination_period_id", nullable = false)
+    private ExaminationPeriod examinationPeriod;
 
 }

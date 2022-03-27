@@ -28,6 +28,6 @@ public class ResponsibilityDefinition {
 
 
     @OneToMany(mappedBy = "responsibilityDefinition", orphanRemoval = true)
-    private Set<Responsibility> responsibilities = new java.util.LinkedHashSet<>();
+    private Set<Responsibility> responsibilities;
 
 }
