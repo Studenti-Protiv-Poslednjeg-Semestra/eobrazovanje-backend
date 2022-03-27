@@ -21,9 +21,6 @@ public class Responsibility {
     @Column
     private Integer points;
 
-    @Column
-    private String place;
-
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "student_id")
     private Student student;
