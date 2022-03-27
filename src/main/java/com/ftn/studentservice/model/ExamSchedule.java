@@ -28,7 +28,7 @@ public class ExamSchedule {
     private Subject subject;
 
     @OneToMany(mappedBy = "examSchedule", cascade = CascadeType.REFRESH)
-    Set<Exam> exams;
+    private Set<Exam> exams;
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "examination_period_id", nullable = false)
