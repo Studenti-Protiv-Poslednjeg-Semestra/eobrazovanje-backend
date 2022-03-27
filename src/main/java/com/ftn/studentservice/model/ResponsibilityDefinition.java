@@ -29,6 +29,6 @@ public class ResponsibilityDefinition {
 
 
     @OneToMany(mappedBy = "responsibilityDefinition", orphanRemoval = true)
-    private Set<Responsibility> responsibilities = new LinkedHashSet<>();
+    private Set<Responsibility> responsibilities;
 
 }
