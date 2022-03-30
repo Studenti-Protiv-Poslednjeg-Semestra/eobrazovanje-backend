@@ -1,5 +1,5 @@
 package com.ftn.studentservice.security;
-import com.ftn.studentservice.repository.IUserRepository;
+import com.ftn.studentservice.repository.UserRepository;
 import com.ftn.studentservice.security.jwt.JwtTokenFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ import static java.lang.String.format;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
     private final JwtTokenFilter jwtTokenFilter;
 
     @Bean
@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); };
 
-    public SecurityConfig(IUserRepository userRepository, JwtTokenFilter jwtTokenFilter) {
+    public SecurityConfig(UserRepository userRepository, JwtTokenFilter jwtTokenFilter) {
         this.userRepository = userRepository;
         this.jwtTokenFilter = jwtTokenFilter;
     }
@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Set permissions on endpoints
         http.authorizeRequests()
                 // Swagger endpoints must be publicly accessible
-                .antMatchers("/").permitAll()
+                .antMatchers("/*").permitAll()
                 // Our public endpoints
 //                .antMatchers("/test/*").permitAll()
                 .antMatchers("/auth/*").permitAll()

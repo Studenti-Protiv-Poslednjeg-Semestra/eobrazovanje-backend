@@ -3,6 +3,7 @@ package com.ftn.studentservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +25,9 @@ public class Responsibility {
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "student_id")
     private Student student;
+
+    @Column
+    private LocalDate date;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "responsibility_definition_id")

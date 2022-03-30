@@ -10,8 +10,8 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-//@NoArgsConstructor
+//@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 //End of lombok
 @Entity
@@ -43,6 +43,12 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+
     // Spring security works with usernames witch in our case is an email.
     @Override
     public String getUsername() {
@@ -68,6 +74,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 
     //I commented out role because i feel like it
     // is going to be redundant once we implement

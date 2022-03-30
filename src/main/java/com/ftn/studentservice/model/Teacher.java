@@ -3,6 +3,7 @@ package com.ftn.studentservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -13,20 +14,21 @@ import java.util.Set;
 @AllArgsConstructor
 //End of lombok
 @Entity
-public class Professor {
+public class Teacher {
 
     @Id
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "professor_subjects",
-            joinColumns = @JoinColumn(name = "professor_id"),
-            inverseJoinColumns = @JoinColumn(name = "subjects_id"))
-    private Set<Subject> subjects = new java.util.LinkedHashSet<>();
+    @ManyToMany(mappedBy = "professors", cascade = CascadeType.REFRESH)
+    private Set<Subject> professorOn = new LinkedHashSet<>();
+
+    @ManyToMany(mappedBy = "assistants", cascade = CascadeType.REFRESH)
+    private Set<Subject> assistantOn = new LinkedHashSet<>();
 
     @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     @MapsId
     private User user;
+
 
 }

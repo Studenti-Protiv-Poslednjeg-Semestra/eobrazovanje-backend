@@ -1,6 +1,5 @@
 package com.ftn.studentservice.security.jwt;
-
-import com.ftn.studentservice.repository.IUserRepository;
+import com.ftn.studentservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,9 +23,9 @@ import static java.util.Optional.ofNullable;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, IUserRepository userRepository) {
+    public JwtTokenFilter(JwtTokenUtil jwtTokenUtil, UserRepository userRepository) {
         this.jwtTokenUtil = jwtTokenUtil;
         this.userRepository = userRepository;
     }
