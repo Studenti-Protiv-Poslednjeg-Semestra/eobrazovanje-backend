@@ -1,7 +1,7 @@
 package com.ftn.studentservice.service.implementation;
 
 import com.ftn.studentservice.model.User;
-import com.ftn.studentservice.repository.IUserRepository;
+import com.ftn.studentservice.repository.UserRepository;
 import com.ftn.studentservice.service.IUserService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,9 +16,9 @@ import static java.lang.String.format;
 @Service
 public class UserServiceImpl implements IUserService, UserDetailsService {
 
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserServiceImpl(IUserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

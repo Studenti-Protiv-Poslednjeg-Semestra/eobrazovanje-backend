@@ -17,6 +17,7 @@ import java.util.Set;
 public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private Long id;
 
     @NotBlank(message = "Code must not be left out!")
@@ -50,12 +51,22 @@ public class Subject {
     private Integer ECTS;
 
 
-    @ManyToMany(mappedBy = "subjects", cascade = CascadeType.REFRESH)
-    private Set<Professor> professors;
+
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    @JoinTable(name = "subject_professors",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "teachers_id"))
+    private Set<Teacher> professors = new LinkedHashSet<>();
+
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    @JoinTable(name = "subject_assistants",
+            joinColumns = @JoinColumn(name = "subject_id"),
+            inverseJoinColumns = @JoinColumn(name = "teachers_id"))
+    private Set<Teacher> assistants = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    private Set<ResponsibilityDefinition> responsibilityDefinitions;
-
+//    @ToString.Exclude
+    private Set<ResponsibilityDefinition> responsibilityDefinitions = new LinkedHashSet<>();
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "syllabus_id", nullable = false)
