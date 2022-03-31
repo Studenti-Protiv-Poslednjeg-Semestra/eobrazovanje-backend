@@ -24,6 +24,8 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
+    @Column(nullable = false)
+    private String reasonForPayment;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "student_id", nullable = false)
