@@ -41,7 +41,9 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return null;
+    public User findUserByEmail(String username) {
+        Optional<User> user = userRepository.findByEmail(username);
+
+        return user.orElse(null);
     }
 }

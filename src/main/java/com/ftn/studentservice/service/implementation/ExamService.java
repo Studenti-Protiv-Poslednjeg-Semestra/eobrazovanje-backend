@@ -17,6 +17,12 @@ public class ExamService implements IExamService {
     }
 
     @Override
+    public List<Exam> findByStudentId(Long id) {
+        List<Exam> exams = examRepository.findByStudentId(id);
+        return exams.isEmpty() ? null : exams;
+    }
+
+    @Override
     public Exam findOne(Long id) {
         return examRepository.findById(id).orElse(null);
     }
