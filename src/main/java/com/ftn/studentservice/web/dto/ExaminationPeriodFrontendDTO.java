@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class ExaminationPeriodFrontendDTO implements Serializable {
 
+    private Long id;
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -15,15 +16,25 @@ public class ExaminationPeriodFrontendDTO implements Serializable {
     }
 
     public ExaminationPeriodFrontendDTO(ExaminationPeriod examinationPeriod) {
+        this.id = examinationPeriod.getId();
         this.name = examinationPeriod.getName();
         this.startDate = examinationPeriod.getStartDate();
         this.endDate = examinationPeriod.getEndDate();
     }
 
-    public ExaminationPeriodFrontendDTO(String name, LocalDate startDate, LocalDate endDate) {
+    public ExaminationPeriodFrontendDTO(Long id, String name, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

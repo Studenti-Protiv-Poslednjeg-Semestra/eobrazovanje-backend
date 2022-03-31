@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class ExamFrontendDTO implements Serializable {
 
+    private Long id;
     private Integer points;
     private ExamScheduleFrontendDTO examScheduleFrontendDTO;
     private StudentFrontendDTO studentFrontendDTO;
@@ -14,11 +15,20 @@ public class ExamFrontendDTO implements Serializable {
 
     public ExamFrontendDTO(Exam exam){
         super();
+        this.id = exam.getId();
         this.points = exam.getPoints();
         this.examScheduleFrontendDTO = new ExamScheduleFrontendDTO(exam.getExamSchedule());
         this.studentFrontendDTO = new StudentFrontendDTO(exam.getStudent());
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Integer getPoints() {
         return points;
@@ -28,19 +38,19 @@ public class ExamFrontendDTO implements Serializable {
         this.points = points;
     }
 
-    public ExamScheduleFrontendDTO getExamScheduleDTO() {
+    public ExamScheduleFrontendDTO getExamScheduleFrontendDTO() {
         return examScheduleFrontendDTO;
     }
 
-    public void setExamScheduleDTO(ExamScheduleFrontendDTO examScheduleFrontendDTO) {
+    public void setExamScheduleFrontendDTO(ExamScheduleFrontendDTO examScheduleFrontendDTO) {
         this.examScheduleFrontendDTO = examScheduleFrontendDTO;
     }
 
-    public StudentFrontendDTO getStudentDTO() {
+    public StudentFrontendDTO getStudentFrontendDTO() {
         return studentFrontendDTO;
     }
 
-    public void setStudentDTO(StudentFrontendDTO studentFrontendDTO) {
+    public void setStudentFrontendDTO(StudentFrontendDTO studentFrontendDTO) {
         this.studentFrontendDTO = studentFrontendDTO;
     }
 }

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class UserFrontendDTO implements Serializable {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,17 +16,27 @@ public class UserFrontendDTO implements Serializable {
     }
 
     public UserFrontendDTO(User user) {
+        this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.UCN = user.getUCN();
     }
 
-    public UserFrontendDTO(String firstName, String lastName, String email, String UCN) {
+    public UserFrontendDTO(Long id, String firstName, String lastName, String email, String UCN) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.UCN = UCN;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class SubjectFrontendDTO implements Serializable {
 
+    private Long id;
     private String name;
     private Integer semester;
     private String description;
@@ -16,6 +17,7 @@ public class SubjectFrontendDTO implements Serializable {
     }
 
     public SubjectFrontendDTO(Subject subject) {
+        this.id = subject.getId();
         this.name = subject.getName();
         this.semester = subject.getSemester();
         this.description = subject.getDescription();
@@ -23,12 +25,21 @@ public class SubjectFrontendDTO implements Serializable {
         this.syllabusFrontendDTO = new SyllabusFrontendDTO(subject.getSyllabus());
     }
 
-    public SubjectFrontendDTO(String name, Integer semester, String description, Integer ECTS, SyllabusFrontendDTO syllabusFrontendDTO) {
+    public SubjectFrontendDTO(Long id, String name, Integer semester, String description, Integer ECTS, SyllabusFrontendDTO syllabusFrontendDTO) {
+        this.id = id;
         this.name = name;
         this.semester = semester;
         this.description = description;
         this.ECTS = ECTS;
         this.syllabusFrontendDTO = syllabusFrontendDTO;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 
 public class ExamScheduleFrontendDTO implements Serializable {
 
+    private Long id;
     private LocalDateTime timeOfExam;
     private SubjectFrontendDTO subjectFrontendDTO;
     private String place;
@@ -16,19 +17,30 @@ public class ExamScheduleFrontendDTO implements Serializable {
     }
 
     public ExamScheduleFrontendDTO(ExamSchedule examSchedule){
+        this.id = examSchedule.getId();
         this.timeOfExam = examSchedule.getTimeOfExam();
         this.subjectFrontendDTO = new SubjectFrontendDTO(examSchedule.getSubject());
         this.place = examSchedule.getPlace();
         this.examinationPeriodFrontendDTO = new ExaminationPeriodFrontendDTO(examSchedule.getExaminationPeriod());
     }
 
-    public ExamScheduleFrontendDTO(LocalDateTime timeOfExam, SubjectFrontendDTO subjectFrontendDTO, String place, ExaminationPeriodFrontendDTO examinationPeriodFrontendDTO) {
+    public ExamScheduleFrontendDTO(Long id, LocalDateTime timeOfExam, SubjectFrontendDTO subjectFrontendDTO,
+                                   String place, ExaminationPeriodFrontendDTO examinationPeriodFrontendDTO) {
+        this.id = id;
         this.timeOfExam = timeOfExam;
         this.subjectFrontendDTO = subjectFrontendDTO;
         this.place = place;
         this.examinationPeriodFrontendDTO = examinationPeriodFrontendDTO;
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getTimeOfExam() {
         return timeOfExam;

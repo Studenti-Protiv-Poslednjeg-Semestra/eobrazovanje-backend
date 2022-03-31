@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 public class SyllabusFrontendDTO implements Serializable {
 
+    private Long id;
     private LocalDate yearOfCreation;
     private MajorFrontendDTO majorFrontendDTO;
 
@@ -14,13 +15,23 @@ public class SyllabusFrontendDTO implements Serializable {
     }
 
     public SyllabusFrontendDTO(Syllabus syllabus) {
+        this.id = syllabus.getId();
         this.yearOfCreation = syllabus.getYearOfCreation();
         this.majorFrontendDTO = new MajorFrontendDTO(syllabus.getMajor());
     }
 
-    public SyllabusFrontendDTO(LocalDate yearOfCreation, MajorFrontendDTO majorFrontendDTO) {
+    public SyllabusFrontendDTO(Long id, LocalDate yearOfCreation, MajorFrontendDTO majorFrontendDTO) {
+        this.id = id;
         this.yearOfCreation = yearOfCreation;
         this.majorFrontendDTO = majorFrontendDTO;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getYearOfCreation() {
