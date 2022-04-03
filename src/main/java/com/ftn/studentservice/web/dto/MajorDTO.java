@@ -4,24 +4,24 @@ import com.ftn.studentservice.model.Major;
 
 import java.io.Serializable;
 
-public class MajorFrontendDTO implements Serializable {
+public class MajorDTO implements Serializable {
 
     private Long id;
     private String name;
     private Integer duration;
     private Integer totalETCS;
 
-    public MajorFrontendDTO() {
+    public MajorDTO() {
     }
 
-    public MajorFrontendDTO(Major major) {
+    public MajorDTO(Major major) {
         this.id = major.getId();
         this.name = major.getName();
         this.duration = major.getDuration();
         this.totalETCS = major.getTotalETCS();
     }
 
-    public MajorFrontendDTO(Long id, String name, Integer duration, Integer totalETCS) {
+    public MajorDTO(Long id, String name, Integer duration, Integer totalETCS) {
         this.id = id;
         this.name = name;
         this.duration = duration;

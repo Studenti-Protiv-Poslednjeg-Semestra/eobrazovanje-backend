@@ -5,24 +5,24 @@ import com.ftn.studentservice.model.ExaminationPeriod;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ExaminationPeriodFrontendDTO implements Serializable {
+public class ExaminationPeriodDTO implements Serializable {
 
     private Long id;
     private String name;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public ExaminationPeriodFrontendDTO() {
+    public ExaminationPeriodDTO() {
     }
 
-    public ExaminationPeriodFrontendDTO(ExaminationPeriod examinationPeriod) {
+    public ExaminationPeriodDTO(ExaminationPeriod examinationPeriod) {
         this.id = examinationPeriod.getId();
         this.name = examinationPeriod.getName();
         this.startDate = examinationPeriod.getStartDate();
         this.endDate = examinationPeriod.getEndDate();
     }
 
-    public ExaminationPeriodFrontendDTO(Long id, String name, LocalDate startDate, LocalDate endDate) {
+    public ExaminationPeriodDTO(Long id, String name, LocalDate startDate, LocalDate endDate) {
         this.id = id;
         this.name = name;
         this.startDate = startDate;

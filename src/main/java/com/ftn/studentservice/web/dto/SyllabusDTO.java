@@ -5,25 +5,25 @@ import com.ftn.studentservice.model.Syllabus;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class SyllabusFrontendDTO implements Serializable {
+public class SyllabusDTO implements Serializable {
 
     private Long id;
     private LocalDate yearOfCreation;
-    private MajorFrontendDTO majorFrontendDTO;
+    private MajorDTO majorDTO;
 
-    public SyllabusFrontendDTO() {
+    public SyllabusDTO() {
     }
 
-    public SyllabusFrontendDTO(Syllabus syllabus) {
+    public SyllabusDTO(Syllabus syllabus) {
         this.id = syllabus.getId();
         this.yearOfCreation = syllabus.getYearOfCreation();
-        this.majorFrontendDTO = new MajorFrontendDTO(syllabus.getMajor());
+        this.majorDTO = new MajorDTO(syllabus.getMajor());
     }
 
-    public SyllabusFrontendDTO(Long id, LocalDate yearOfCreation, MajorFrontendDTO majorFrontendDTO) {
+    public SyllabusDTO(Long id, LocalDate yearOfCreation, MajorDTO majorDTO) {
         this.id = id;
         this.yearOfCreation = yearOfCreation;
-        this.majorFrontendDTO = majorFrontendDTO;
+        this.majorDTO = majorDTO;
     }
 
     public Long getId() {
@@ -42,11 +42,11 @@ public class SyllabusFrontendDTO implements Serializable {
         this.yearOfCreation = yearOfCreation;
     }
 
-    public MajorFrontendDTO getMajorFrontendDTO() {
-        return majorFrontendDTO;
+    public MajorDTO getMajorDTO() {
+        return majorDTO;
     }
 
-    public void setMajorFrontendDTO(MajorFrontendDTO majorFrontendDTO) {
-        this.majorFrontendDTO = majorFrontendDTO;
+    public void setMajorDTO(MajorDTO majorDTO) {
+        this.majorDTO = majorDTO;
     }
 }

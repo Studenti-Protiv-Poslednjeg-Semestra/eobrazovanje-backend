@@ -4,7 +4,7 @@ import com.ftn.studentservice.model.User;
 
 import java.io.Serializable;
 
-public class UserFrontendDTO implements Serializable {
+public class UserDTO implements Serializable {
 
     private Long id;
     private String firstName;
@@ -12,10 +12,10 @@ public class UserFrontendDTO implements Serializable {
     private String email;
     private String UCN;
 
-    public UserFrontendDTO() {
+    public UserDTO() {
     }
 
-    public UserFrontendDTO(User user) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
@@ -23,7 +23,7 @@ public class UserFrontendDTO implements Serializable {
         this.UCN = user.getUCN();
     }
 
-    public UserFrontendDTO(Long id, String firstName, String lastName, String email, String UCN) {
+    public UserDTO(Long id, String firstName, String lastName, String email, String UCN) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -4,34 +4,34 @@ import com.ftn.studentservice.model.Subject;
 
 import java.io.Serializable;
 
-public class SubjectFrontendDTO implements Serializable {
+public class SubjectDTO implements Serializable {
 
     private Long id;
     private String name;
     private Integer semester;
     private String description;
     private Integer ECTS;
-    private SyllabusFrontendDTO syllabusFrontendDTO;
+    private SyllabusDTO syllabusDTO;
 
-    public SubjectFrontendDTO() {
+    public SubjectDTO() {
     }
 
-    public SubjectFrontendDTO(Subject subject) {
+    public SubjectDTO(Subject subject) {
         this.id = subject.getId();
         this.name = subject.getName();
         this.semester = subject.getSemester();
         this.description = subject.getDescription();
         this.ECTS = subject.getECTS();
-        this.syllabusFrontendDTO = new SyllabusFrontendDTO(subject.getSyllabus());
+        this.syllabusDTO = new SyllabusDTO(subject.getSyllabus());
     }
 
-    public SubjectFrontendDTO(Long id, String name, Integer semester, String description, Integer ECTS, SyllabusFrontendDTO syllabusFrontendDTO) {
+    public SubjectDTO(Long id, String name, Integer semester, String description, Integer ECTS, SyllabusDTO syllabusDTO) {
         this.id = id;
         this.name = name;
         this.semester = semester;
         this.description = description;
         this.ECTS = ECTS;
-        this.syllabusFrontendDTO = syllabusFrontendDTO;
+        this.syllabusDTO = syllabusDTO;
     }
 
     public Long getId() {
@@ -74,11 +74,11 @@ public class SubjectFrontendDTO implements Serializable {
         this.ECTS = ECTS;
     }
 
-    public SyllabusFrontendDTO getSyllabusFrontendDTO() {
-        return syllabusFrontendDTO;
+    public SyllabusDTO getSyllabusDTO() {
+        return syllabusDTO;
     }
 
-    public void setSyllabusFrontendDTO(SyllabusFrontendDTO syllabusFrontendDTO) {
-        this.syllabusFrontendDTO = syllabusFrontendDTO;
+    public void setSyllabusDTO(SyllabusDTO syllabusDTO) {
+        this.syllabusDTO = syllabusDTO;
     }
 }
