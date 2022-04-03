@@ -20,11 +20,13 @@ public interface IExamService {
 
     Boolean teacherAuthorizedForSyllabus(Long syllabusId, Long teacherId);
 
-    Exam findOne(Long id);
+    ExamDTO findOne(Long id);
 
     List<Exam> findAll();
 
     Exam save(Exam exam);
+
+    ExamDTO update(ExamDTO examDTO);
 
     void delete(Long id);
 }

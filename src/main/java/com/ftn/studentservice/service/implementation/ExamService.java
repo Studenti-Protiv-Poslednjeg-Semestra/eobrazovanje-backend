@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,13 +47,12 @@ public class ExamService implements IExamService {
     public List<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByStudentId(id, pageable);
 
-        List<Exam> exams = examsPages.getContent();
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
 
-        for (int i = 0 ; i < exams.size(); i++) {
-            for (Teacher professor : exams.get(i).getExamSchedule().getSubject().getProfessors()) {
+        for (Exam exam : exams) {
+            for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(i);
-                    i -= 1;
+                    exams.remove(exam);
                     break;
                 }
             }
@@ -71,13 +67,12 @@ public class ExamService implements IExamService {
     public List<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable);
 
-        List<Exam> exams = examsPages.getContent();
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
 
-        for (int i = 0 ; i < exams.size(); i++) {
-            for (Teacher professor : exams.get(i).getExamSchedule().getSubject().getProfessors()) {
+        for (Exam exam : exams) {
+            for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(i);
-                    i -= 1;
+                    exams.remove(exam);
                     break;
                 }
             }
@@ -126,8 +121,8 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public Exam findOne(Long id) {
-        return examRepository.findById(id).orElse(null);
+    public ExamDTO findOne(Long id) {
+        return examMapper.toDto(examRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -138,6 +133,32 @@ public class ExamService implements IExamService {
     @Override
     public Exam save(Exam exam) {
         return examRepository.save(exam);
+    }
+
+    @Override
+    public ExamDTO update(ExamDTO examDTO) {
+        Optional<Exam> e = examRepository.findById(examDTO.getId());
+        Exam exam;
+        if (e.isPresent()){
+            exam = e.get();
+        }
+        else{
+            return null;
+        }
+
+        // updating basic info
+        exam.setPoints(examDTO.getPoints());
+
+        // updating exam schedule
+        exam.getExamSchedule().setTimeOfExam(examDTO.getExamScheduleDTO().getTimeOfExam());
+        exam.getExamSchedule().setPlace(examDTO.getExamScheduleDTO().getPlace());
+
+        // updating examination period
+        exam.getExamSchedule().getExaminationPeriod().setName(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getName());
+        exam.getExamSchedule().getExaminationPeriod().setStartDate(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getStartDate());
+        exam.getExamSchedule().getExaminationPeriod().setEndDate(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getEndDate());
+
+        return examMapper.toDto(save(exam));
     }
 
     @Override

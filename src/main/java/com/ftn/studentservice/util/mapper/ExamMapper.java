@@ -13,6 +13,8 @@ public interface ExamMapper extends EntityMapper<ExamDTO, Exam>{
     @Mapping(target = "examScheduleDTO", source = "examSchedule")
     @Mapping(target = "examScheduleDTO.subjectDTO", source = "examSchedule.subject")
     @Mapping(target = "examScheduleDTO.subjectDTO.syllabusDTO", source = "examSchedule.subject.syllabus")
+    @Mapping(target = "examScheduleDTO.subjectDTO.syllabusDTO.majorDTO", source = "examSchedule.subject.syllabus.major")
     @Mapping(target = "examScheduleDTO.examinationPeriodDTO", source = "examSchedule.examinationPeriod")
     ExamDTO toDto(Exam s);
+
 }

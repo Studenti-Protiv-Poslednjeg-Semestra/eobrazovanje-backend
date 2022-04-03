@@ -2,7 +2,6 @@ package com.ftn.studentservice.web.controller;
 
 import com.ftn.studentservice.model.*;
 import com.ftn.studentservice.service.*;
-import com.ftn.studentservice.util.mapper.ExamMapper;
 import com.ftn.studentservice.web.dto.ExamDTO;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
@@ -43,8 +42,8 @@ public class ExamController {
         }
         System.out.println("role:" + role);
 
-        Exam exam = examService.findOne(id);
-        if(exam == null) {
+        ExamDTO examDTO = examService.findOne(id);
+        if(examDTO == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -52,7 +51,7 @@ public class ExamController {
         // validate if student requesting exam data is the same
         // student that that data belongs to
         if (role.equals("ROLE_STUDENT")) {
-            if (!Objects.equals(exam.getStudent().getId(), user.getId())) {
+            if (!Objects.equals(examDTO.getStudentDTO().getId(), user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         }
@@ -61,15 +60,12 @@ public class ExamController {
         // validate if teacher requesting exam data is actually
         // the teacher of the subject and student of the exam.
         if (role.equals("ROLE_TEACHER")) {
-            if (!examService.teacherAuthorizedForStudent(exam.getStudent().getId(), user.getId())) {
+            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getId(), user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         }
 
-        ExamDTO examFrontendDTO = new ExamDTO(exam);
-        return ResponseEntity
-                .ok()
-                .body(examFrontendDTO);
+        return new ResponseEntity<>(examDTO, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
@@ -146,6 +142,41 @@ public class ExamController {
         examsForSyllabus = examsForSyllabus == null ? new ArrayList<>() : examsForSyllabus;
 
         return new ResponseEntity<>(examsForSyllabus, HttpStatus.OK);
+    }
+
+
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
+    @PutMapping(value = "{id}")
+    public ResponseEntity<ExamDTO> updateExam(Principal principal, @PathVariable(value = "id") final Long id, @RequestBody ExamDTO examDTO){
+
+        if (examDTO.getId() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (!Objects.equals(id, examDTO.getId())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        if (examService.findOne(id) == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        User user = userService.findUserByEmail(principal.getName());
+        String role = "";
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            role = ga.getAuthority();
+        }
+        System.out.println("role:" + role);
+
+        // TEACHER
+        // validate if teacher requesting edit of exam data is actually
+        // the teacher of the subject and student of the exam
+        if (role.equals("ROLE_TEACHER")) {
+            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getId(), user.getId())) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        ExamDTO result = examService.update(examDTO);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
