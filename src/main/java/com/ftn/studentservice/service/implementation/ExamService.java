@@ -50,13 +50,12 @@ public class ExamService implements IExamService {
     public List<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByStudentId(id, pageable);
 
-        List<Exam> exams = examsPages.getContent();
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
 
-        for (int i = 0 ; i < exams.size(); i++) {
-            for (Teacher professor : exams.get(i).getExamSchedule().getSubject().getProfessors()) {
+        for (Exam exam : exams) {
+            for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(i);
-                    i -= 1;
+                    exams.remove(exam);
                     break;
                 }
             }
@@ -71,13 +70,12 @@ public class ExamService implements IExamService {
     public List<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable);
 
-        List<Exam> exams = examsPages.getContent();
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
 
-        for (int i = 0 ; i < exams.size(); i++) {
-            for (Teacher professor : exams.get(i).getExamSchedule().getSubject().getProfessors()) {
+        for (Exam exam : exams) {
+            for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(i);
-                    i -= 1;
+                    exams.remove(exam);
                     break;
                 }
             }
