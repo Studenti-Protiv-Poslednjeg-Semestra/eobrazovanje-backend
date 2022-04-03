@@ -25,7 +25,7 @@ public class TeacherController {
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
-    @PutMapping(value = "/{teacherId}/assistent/subjects")
+    @PutMapping(value = "/{teacherId}/assistant/subjects")
     public ResponseEntity<TeacherDTO> addAssistentToSubject(@PathVariable Long teacherId, @RequestBody SubjectDTO subjectDTO){
         return new ResponseEntity<>(iTeacherService.addAssistantToSubject(teacherId, subjectDTO), HttpStatus.OK);
     }
