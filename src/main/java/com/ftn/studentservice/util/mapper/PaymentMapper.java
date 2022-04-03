@@ -11,5 +11,6 @@ public interface PaymentMapper {
     @Mapping(target = "studentDTO", source = "student")
     PaymentDTO toDto(Payment payment);
 
+    @Mapping(target = "student", source = "studentDTO")
     Payment toEntity(PaymentDTO paymentDTO);
 }

@@ -12,5 +12,7 @@ public interface StudentMapper {
     @Mapping(target = "majorDTO", source = "major")
     StudentDTO toDto(Student student);
 
+    @Mapping(target = "user", source = "userDTO")
+    @Mapping(target = "major", source = "majorDTO")
     Student toEntity(StudentDTO studentDTO);
 }
