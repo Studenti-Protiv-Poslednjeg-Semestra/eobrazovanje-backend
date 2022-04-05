@@ -13,9 +13,9 @@ public interface ITeacherService {
 
     Teacher save(Teacher teacher);
 
-    TeacherDTO addProfessorToSubject(Long teacherId, SubjectDTO subjectDTO);
+    TeacherDTO addProfessorToSubject(Long teacherId, Long subjectId);
 
-    TeacherDTO addAssistantToSubject(Long teacherId, SubjectDTO subjectDTO);
+    TeacherDTO addAssistantToSubject(Long teacherId, Long subjectId);
 
     void delete(Long id);
 }
