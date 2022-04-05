@@ -2,16 +2,22 @@ package com.ftn.studentservice.util.mapper;
 
 import com.ftn.studentservice.model.*;
 import com.ftn.studentservice.web.dto.ExamScheduleDTO;
-import com.ftn.studentservice.web.dto.ExaminationPeriodDTO;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring", uses = { Subject.class, ExaminationPeriod.class })
 public interface ExamScheduleMapper extends EntityMapper<ExamScheduleDTO, ExamSchedule>{
     @Mapping(target = "subjectDTO", source = "subject")
+    @Mapping(target = "subjectDTO.syllabusDTO", source = "subject.syllabus")
+    @Mapping(target = "subjectDTO.syllabusDTO.majorDTO", source = "subject.syllabus.major")
     @Mapping(target = "examinationPeriodDTO", source = "examinationPeriod")
     ExamScheduleDTO toDto(ExamSchedule s);
+
+    @Mapping(target = "subject", source = "subjectDTO")
+//    Doesn't work for some reason
+//    @Mapping(target = "subject.syllabus", source = "subjectDTO.syllabusDTO")
+//    @Mapping(target = "subject.syllabus.major", source = "subjectDTO.syllabusDTO.majorDTO")
+    @Mapping(target = "examinationPeriod", source = "examinationPeriodDTO")
+    ExamSchedule toEntity(ExamScheduleDTO s);
 
 }

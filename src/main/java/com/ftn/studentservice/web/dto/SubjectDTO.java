@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class SubjectDTO implements Serializable {
 
     private Long id;
+    private String code;
     private String name;
     private Integer semester;
     private String description;
@@ -18,6 +19,7 @@ public class SubjectDTO implements Serializable {
 
     public SubjectDTO(Subject subject) {
         this.id = subject.getId();
+        this.code = subject.getCode();
         this.name = subject.getName();
         this.semester = subject.getSemester();
         this.description = subject.getDescription();
@@ -25,8 +27,9 @@ public class SubjectDTO implements Serializable {
         this.syllabusDTO = new SyllabusDTO(subject.getSyllabus());
     }
 
-    public SubjectDTO(Long id, String name, Integer semester, String description, Integer ECTS, SyllabusDTO syllabusDTO) {
+    public SubjectDTO(Long id, String code, String name, Integer semester, String description, Integer ECTS, SyllabusDTO syllabusDTO) {
         this.id = id;
+        this.code = code;
         this.name = name;
         this.semester = semester;
         this.description = description;
@@ -40,6 +43,14 @@ public class SubjectDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
