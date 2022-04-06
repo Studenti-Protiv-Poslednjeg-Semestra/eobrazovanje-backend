@@ -8,8 +8,6 @@ import com.ftn.studentservice.web.dto.ExamDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,12 +20,17 @@ public class ExamService implements IExamService {
     private final ExamMapper examMapper;
     private final EnrollmentService enrollmentService;
     private final SyllabusService syllabusService;
+    private final StudentService studentService;
+    private final ExamScheduleService examScheduleService;
 
-    public ExamService(ExamRepository examRepository, ExamMapper examMapper, EnrollmentService enrollmentService, SyllabusService syllabusService) {
+    public ExamService(ExamRepository examRepository, ExamMapper examMapper, EnrollmentService enrollmentService,
+                       SyllabusService syllabusService, StudentService studentService, ExamScheduleService examScheduleService) {
         this.examRepository = examRepository;
         this.examMapper = examMapper;
         this.enrollmentService = enrollmentService;
         this.syllabusService = syllabusService;
+        this.studentService = studentService;
+        this.examScheduleService = examScheduleService;
     }
 
 
@@ -133,6 +136,22 @@ public class ExamService implements IExamService {
     @Override
     public Exam save(Exam exam) {
         return examRepository.save(exam);
+    }
+
+    @Override
+    public ExamDTO createExamApplication(Long examScheduleId, Long studentId){
+        ExamSchedule examSchedule = examScheduleService.findOne(examScheduleId);
+        Student student = studentService.findOne(studentId);
+
+        if (examSchedule == null || student == null){
+            return null;
+        }
+
+        Exam exam = new Exam();
+        exam.setExamSchedule(examSchedule);
+        exam.setStudent(student);
+
+        return (examMapper.toDto(save(exam)));
     }
 
     @Override

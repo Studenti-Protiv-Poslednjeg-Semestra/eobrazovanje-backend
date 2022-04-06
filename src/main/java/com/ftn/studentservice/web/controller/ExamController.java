@@ -23,8 +23,7 @@ public class ExamController {
     private final IUserService userService;
     private final ISyllabusService syllabusService;
 
-    public ExamController(IExamService examService, IStudentService studentService, IUserService userService,
-                          ISyllabusService syllabusService) {
+    public ExamController(IExamService examService, IStudentService studentService, IUserService userService, ISyllabusService syllabusService) {
         this.examService = examService;
         this.studentService = studentService;
         this.userService = userService;
@@ -179,5 +178,34 @@ public class ExamController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT')")
+    @PostMapping(value = "application")
+    public ResponseEntity<ExamDTO> createExamApplication(Principal principal,
+                                                            @PathParam(value = "exam_schedule_id") Long examScheduleId,
+                                                            @PathParam(value = "student_id") Long studentId){
+        User user = userService.findUserByEmail(principal.getName());
+        String role = "";
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            role = ga.getAuthority();
+        }
+        System.out.println("role:" + role);
+
+        // STUDENT
+        // validate if student creating exam application is the same
+        // for whom application is being created
+        if (role.equals("ROLE_STUDENT")) {
+            if (!Objects.equals(user.getId(), studentId)) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        ExamDTO examDTO = examService.createExamApplication(examScheduleId, studentId);
+        if (examDTO == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(examDTO, HttpStatus.OK);
+    }
 
 }

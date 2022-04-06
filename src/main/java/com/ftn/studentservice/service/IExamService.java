@@ -26,6 +26,8 @@ public interface IExamService {
 
     Exam save(Exam exam);
 
+    ExamDTO createExamApplication(Long subjectId, Long studentId);
+
     ExamDTO update(ExamDTO examDTO);
 
     void delete(Long id);
