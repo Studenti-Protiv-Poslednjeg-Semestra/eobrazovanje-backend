@@ -129,8 +129,8 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public List<Exam> findAll() {
-        return examRepository.findAll();
+    public List<ExamDTO> findAll() {
+        return examRepository.findAll().stream().map(examMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

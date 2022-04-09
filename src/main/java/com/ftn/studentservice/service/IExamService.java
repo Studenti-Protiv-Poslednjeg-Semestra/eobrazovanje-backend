@@ -22,7 +22,7 @@ public interface IExamService {
 
     Exam findOne(Long id);
 
-    List<Exam> findAll();
+    List<ExamDTO> findAll();
 
     Exam save(Exam exam);
 

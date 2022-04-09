@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "exams")
@@ -32,6 +33,13 @@ public class ExamController {
         this.syllabusService = syllabusService;
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<ExamDTO>> getAllExams() {
+        List<ExamDTO> allExams = examService.findAll();
+        return new ResponseEntity<>(allExams, HttpStatus.OK);
+    }
 
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
     @GetMapping(value = "{id}")
