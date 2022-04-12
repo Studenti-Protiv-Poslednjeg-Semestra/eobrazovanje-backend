@@ -60,4 +60,5 @@ public class MajorDTO implements Serializable {
     public void setTotalETCS(Integer totalETCS) {
         this.totalETCS = totalETCS;
     }
+
 }
