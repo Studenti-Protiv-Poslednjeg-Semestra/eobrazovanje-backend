@@ -14,7 +14,4 @@ public interface SyllabusMapper extends EntityMapper<SyllabusDTO, Syllabus>{
     @Mapping(target = "major", source = "majorDTO")
     Syllabus toEntity(SyllabusDTO syllabusDTO);
 
-	@Mapping(target = "majorDTO", source = "major")
-    SyllabusDTO toDto(Syllabus s);
-
 }
