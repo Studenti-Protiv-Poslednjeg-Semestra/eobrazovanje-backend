@@ -6,6 +6,6 @@ public interface IUserService {
 
     User findOne(Long id);
 
-    User findUserByUsername(String username);
+    User findUserByEmail(String username);
 
 }

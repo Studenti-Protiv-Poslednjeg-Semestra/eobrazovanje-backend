@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface IEnrollmentService {
 
+    List<Enrollment> findByStudentId(Long id);
+
     Enrollment findOne(Long id);
 
     List<Enrollment> findAll();
