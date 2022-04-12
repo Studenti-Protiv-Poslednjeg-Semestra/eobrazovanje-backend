@@ -1,9 +1,10 @@
 package com.ftn.studentservice.web.dto;
 
+import lombok.Data;
 import com.ftn.studentservice.model.Major;
-
 import java.io.Serializable;
 
+@Data
 public class MajorDTO implements Serializable {
 
     private Long id;

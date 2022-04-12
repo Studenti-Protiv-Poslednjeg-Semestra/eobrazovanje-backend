@@ -1,9 +1,10 @@
 package com.ftn.studentservice.web.dto;
 
+import lombok.Data;
 import com.ftn.studentservice.model.Subject;
-
 import java.io.Serializable;
 
+@Data
 public class SubjectDTO implements Serializable {
 
     private Long id;
@@ -81,4 +82,5 @@ public class SubjectDTO implements Serializable {
     public void setSyllabusDTO(SyllabusDTO syllabusDTO) {
         this.syllabusDTO = syllabusDTO;
     }
+
 }

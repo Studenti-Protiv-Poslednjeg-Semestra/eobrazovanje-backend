@@ -1,10 +1,11 @@
 package com.ftn.studentservice.web.dto;
 
-import com.ftn.studentservice.model.Syllabus;
-
-import java.io.Serializable;
+import lombok.Data;
 import java.time.LocalDate;
+import com.ftn.studentservice.model.Syllabus;
+import java.io.Serializable;
 
+@Data
 public class SyllabusDTO implements Serializable {
 
     private Long id;
@@ -49,4 +50,5 @@ public class SyllabusDTO implements Serializable {
     public void setMajorDTO(MajorDTO majorDTO) {
         this.majorDTO = majorDTO;
     }
+
 }

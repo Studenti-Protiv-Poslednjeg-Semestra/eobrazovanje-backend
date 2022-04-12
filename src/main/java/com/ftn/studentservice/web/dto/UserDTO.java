@@ -1,9 +1,10 @@
 package com.ftn.studentservice.web.dto;
 
+import lombok.Data;
 import com.ftn.studentservice.model.User;
-
 import java.io.Serializable;
 
+@Data
 public class UserDTO implements Serializable {
 
     private Long id;
@@ -70,4 +71,5 @@ public class UserDTO implements Serializable {
     public void setUCN(String UCN) {
         this.UCN = UCN;
     }
+
 }
