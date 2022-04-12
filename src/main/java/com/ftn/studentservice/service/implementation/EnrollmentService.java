@@ -17,6 +17,12 @@ public class EnrollmentService implements IEnrollmentService {
     }
 
     @Override
+    public List<Enrollment> findByStudentId(Long id) {
+        List<Enrollment> enrollments = enrollmentRepository.findByStudentId(id);
+        return enrollments.isEmpty() ? null : enrollments;
+    }
+
+    @Override
     public Enrollment findOne(Long id) {
         return enrollmentRepository.findById(id).orElse(null);
     }
