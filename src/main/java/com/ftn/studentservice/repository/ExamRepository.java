@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ExamRepository extends JpaRepository<Exam, Long> {
+    Page<Exam> findAll(Pageable pageable);
+
     List<Exam> findByStudentId(Long id);
 
     Page<Exam> findByStudentId(Long id, Pageable pageable);

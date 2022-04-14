@@ -34,11 +34,24 @@ public class ExamController {
     }
 
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     @GetMapping
-    public ResponseEntity<List<ExamDTO>> getAllExams() {
-        List<ExamDTO> allExams = examService.findAll();
-        return new ResponseEntity<>(allExams, HttpStatus.OK);
+    public ResponseEntity<Page<ExamDTO>> getAllExams(Principal principal,
+                                                     @PathParam(value = "page") Integer page,
+                                                     @PathParam(value = "itemsPerPage") Integer itemsPerPage) {
+        User user = userService.findUserByEmail(principal.getName());
+        String role = "";
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            role = ga.getAuthority();
+        }
+
+        if (role.equals("ROLE_TEACHER")) {
+            Page<ExamDTO> allExamsForTeacher = examService.findAllForTeacher(user.getId(),PageRequest.of(page, itemsPerPage));
+            return new ResponseEntity<Page<ExamDTO>>(allExamsForTeacher, HttpStatus.OK);
+        }
+
+        Page<ExamDTO> allExams = examService.findAll(PageRequest.of(page, itemsPerPage));
+        return new ResponseEntity<Page<ExamDTO>>(allExams, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
@@ -82,7 +95,9 @@ public class ExamController {
 
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER','STUDENT')")
     @GetMapping(value = "student/{id}")
-    public ResponseEntity<List<ExamDTO>> allExamsForStudent(Principal principal, @PathVariable Long id, @PathParam(value = "page") Integer page){
+    public ResponseEntity<Page<ExamDTO>> allExamsForStudent(Principal principal, @PathVariable Long id,
+                                                            @PathParam(value = "page") Integer page,
+                                                            @PathParam(value = "itemsPerPage") Integer itemsPerPage){
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
@@ -111,20 +126,21 @@ public class ExamController {
             if (!examService.teacherAuthorizedForStudent(id, user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            List<ExamDTO> examsForStudentForTeacher = examService.findByStudentIdForTeacher(id, user.getId(),PageRequest.of(page, 2));
+            Page<ExamDTO> examsForStudentForTeacher = examService.findByStudentIdForTeacher(id, user.getId(),PageRequest.of(page, itemsPerPage));
 
-            return new ResponseEntity<>(examsForStudentForTeacher, HttpStatus.OK);
+            return new ResponseEntity<Page<ExamDTO>>(examsForStudentForTeacher, HttpStatus.OK);
         }
 
-        List<ExamDTO> examsForStudent = examService.findByStudentId(id, PageRequest.of(page, 2));
-        examsForStudent = examsForStudent == null ? new ArrayList<>() : examsForStudent;
+        Page<ExamDTO> examsForStudent = examService.findByStudentId(id, PageRequest.of(page, itemsPerPage));
 
-        return new ResponseEntity<>(examsForStudent, HttpStatus.OK);
+        return new ResponseEntity<Page<ExamDTO>>(examsForStudent, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','TEACHER')")
     @GetMapping(value = "syllabus/{id}")
-    public ResponseEntity<List<ExamDTO>> allExamsForSyllabus(Principal principal, @PathVariable Long id, @PathParam(value = "page") Integer page){
+    public ResponseEntity<Page<ExamDTO>> allExamsForSyllabus(Principal principal, @PathVariable Long id,
+                                                             @PathParam(value = "page") Integer page,
+                                                             @PathParam(value = "itemsPerPage") Integer itemsPerPage){
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
@@ -144,16 +160,15 @@ public class ExamController {
             if (!examService.teacherAuthorizedForSyllabus(id, user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            List<ExamDTO> examsForSyllabusForTeacher = examService.findBySyllabusIdForTeacher(id, user.getId(),PageRequest.of(page, 2));
+            Page<ExamDTO> examsForSyllabusForTeacher = examService.findBySyllabusIdForTeacher(id, user.getId(),PageRequest.of(page, itemsPerPage));
 
-            return new ResponseEntity<>(examsForSyllabusForTeacher, HttpStatus.OK);
+            return new ResponseEntity<Page<ExamDTO>>(examsForSyllabusForTeacher, HttpStatus.OK);
         }
 
         // ADMIN
-        List<ExamDTO> examsForSyllabus = examService.findBySyllabusId(id, PageRequest.of(page, 2));
-        examsForSyllabus = examsForSyllabus == null ? new ArrayList<>() : examsForSyllabus;
+        Page<ExamDTO> examsForSyllabus = examService.findBySyllabusId(id, PageRequest.of(page, itemsPerPage));
 
-        return new ResponseEntity<>(examsForSyllabus, HttpStatus.OK);
+        return new ResponseEntity<Page<ExamDTO>>(examsForSyllabus, HttpStatus.OK);
     }
 
 
