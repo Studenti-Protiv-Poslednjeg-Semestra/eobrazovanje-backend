@@ -6,12 +6,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = {MajorMapper.class})
-public interface SyllabusMapper extends EntityMapper<SyllabusDTO, Syllabus>{
+public interface SyllabusMapper {
 
     @Mapping(target = "majorDTO", source = "major")
     SyllabusDTO toDto(Syllabus syllabus);
 
     @Mapping(target = "major", source = "majorDTO")
     Syllabus toEntity(SyllabusDTO syllabusDTO);
-
 }

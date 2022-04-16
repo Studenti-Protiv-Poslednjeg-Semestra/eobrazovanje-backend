@@ -27,6 +27,7 @@ public class Syllabus {
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "major_id", nullable = false)
+    @ToString.Exclude
     private Major major;
 
 }
