@@ -5,7 +5,7 @@ import com.ftn.studentservice.web.dto.TeacherDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, SubjectMapper.class})
 public interface TeacherMapper {
 
     @Mapping(target = "userDTO", source = "user")
