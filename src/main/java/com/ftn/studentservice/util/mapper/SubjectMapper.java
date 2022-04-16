@@ -5,7 +5,7 @@ import com.ftn.studentservice.web.dto.SubjectDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {SyllabusMapper.class})
+@Mapper(componentModel = "spring", uses = {SyllabusMapper.class, MajorMapper.class})
 public interface SubjectMapper {
 
     @Mapping(target = "syllabusDTO", source = "syllabus")

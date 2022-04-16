@@ -57,7 +57,9 @@ public class TeacherService implements ITeacherService {
         teacherRepository.save(professor);
         subjectRepository.save(subject);
 
-        return teacherMapper.toDto(professor);
+        TeacherDTO teacherDTO  = teacherMapper.toDto(professor);
+
+        return teacherDTO;
     }
 
     @Override

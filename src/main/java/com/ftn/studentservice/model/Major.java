@@ -32,5 +32,6 @@ public class Major {
     private Set<Student> students;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
+    @ToString.Exclude
     private Set<Syllabus> syllabuses;
 }

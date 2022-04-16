@@ -56,20 +56,23 @@ public class Subject {
     @JoinTable(name = "subject_professors",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teachers_id"))
+    @ToString.Exclude
     private Set<Teacher> professors = new LinkedHashSet<>();
 
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "subject_assistants",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teachers_id"))
+    @ToString.Exclude
     private Set<Teacher> assistants = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, orphanRemoval = true)
-//    @ToString.Exclude
+    @ToString.Exclude
     private Set<ResponsibilityDefinition> responsibilityDefinitions = new LinkedHashSet<>();
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "syllabus_id", nullable = false)
+    @ToString.Exclude
     private Syllabus syllabus;
 
 }
