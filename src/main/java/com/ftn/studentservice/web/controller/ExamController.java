@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "exams")
@@ -24,13 +23,15 @@ public class ExamController {
     private final IStudentService studentService;
     private final IUserService userService;
     private final ISyllabusService syllabusService;
+    private final ExamMapper examMapper;
 
     public ExamController(IExamService examService, IStudentService studentService, IUserService userService,
-                          ISyllabusService syllabusService) {
+                          ISyllabusService syllabusService, ExamMapper examMapper) {
         this.examService = examService;
         this.studentService = studentService;
         this.userService = userService;
         this.syllabusService = syllabusService;
+        this.examMapper = examMapper;
     }
 
 
@@ -74,7 +75,7 @@ public class ExamController {
             }
         }
 
-        ExamDTO examFrontendDTO = new ExamDTO(exam);
+        ExamDTO examFrontendDTO = examMapper.toDto(exam);
         return ResponseEntity
                 .ok()
                 .body(examFrontendDTO);

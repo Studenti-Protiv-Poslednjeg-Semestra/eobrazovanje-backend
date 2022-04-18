@@ -34,6 +34,9 @@ public class Student {
     @JoinColumn(name = "major_id")
     private Major major;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
+    private Set<Enrollment> enrollments = new java.util.LinkedHashSet<>();
+
     @OneToMany(mappedBy = "student", orphanRemoval = true)
     private Set<Document> documents;
 

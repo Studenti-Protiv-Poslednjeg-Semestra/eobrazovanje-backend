@@ -23,4 +23,18 @@ public class ApiExceptionHandler {
 
         return new ResponseEntity<>(exceptionMessage, notFound);
     }
+
+    @ExceptionHandler(value = {NotEnoughFunds.class})
+    public ResponseEntity<Object> handleNotEnoughFoundsException(NotEnoughFunds e){
+
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        ExceptionMessage exceptionMessage = new ExceptionMessage(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(exceptionMessage, badRequest);
+    }
 }

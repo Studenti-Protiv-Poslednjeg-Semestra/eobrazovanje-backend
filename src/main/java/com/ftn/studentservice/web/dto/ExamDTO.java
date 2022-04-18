@@ -13,13 +13,13 @@ public class ExamDTO implements Serializable {
 
     public ExamDTO(){}
 
-    public ExamDTO(Exam exam){
-        super();
-        this.id = exam.getId();
-        this.points = exam.getPoints();
-        this.examScheduleDTO = new ExamScheduleDTO(exam.getExamSchedule());
-        this.studentDTO = new StudentDTO(exam.getStudent());
-    }
+//    public ExamDTO(Exam exam){
+//        super();
+//        this.id = exam.getId();
+//        this.points = exam.getPoints();
+//        this.examScheduleDTO = new ExamScheduleDTO(exam.getExamSchedule());
+//        this.studentDTO = new StudentDTO(exam.getStudent());
+//    }
 
 
     public Long getId() {

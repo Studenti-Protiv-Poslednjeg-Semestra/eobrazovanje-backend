@@ -16,13 +16,13 @@ public class ExamScheduleDTO implements Serializable {
     public ExamScheduleDTO() {
     }
 
-    public ExamScheduleDTO(ExamSchedule examSchedule){
-        this.id = examSchedule.getId();
-        this.timeOfExam = examSchedule.getTimeOfExam();
-        this.subjectDTO = new SubjectDTO(examSchedule.getSubject());
-        this.place = examSchedule.getPlace();
-        this.examinationPeriodDTO = new ExaminationPeriodDTO(examSchedule.getExaminationPeriod());
-    }
+//    public ExamScheduleDTO(ExamSchedule examSchedule){
+//        this.id = examSchedule.getId();
+//        this.timeOfExam = examSchedule.getTimeOfExam();
+//        this.subjectDTO = new SubjectDTO(examSchedule.getSubject());
+//        this.place = examSchedule.getPlace();
+//        this.examinationPeriodDTO = new ExaminationPeriodDTO(examSchedule.getExaminationPeriod());
+//    }
 
     public ExamScheduleDTO(Long id, LocalDateTime timeOfExam, SubjectDTO subjectDTO,
                            String place, ExaminationPeriodDTO examinationPeriodDTO) {
