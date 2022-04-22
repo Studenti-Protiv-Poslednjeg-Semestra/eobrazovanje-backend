@@ -35,55 +35,65 @@ public class ExamService implements IExamService {
 
 
     @Override
-    public List<ExamDTO> findByStudentId(Long id, Pageable pageable) {
-        List<ExamDTO> exams = examRepository.findByStudentId(id, pageable).stream().map(examMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    public Page<ExamDTO> findByStudentId(Long id, Pageable pageable) {
+        Page<ExamDTO> exams = examRepository.findByStudentId(id, pageable).map(examMapper::toDto);
         return exams.isEmpty() ? null : exams;
     }
 
     @Override
-    public List<ExamDTO> findBySyllabusId(Long id, Pageable pageable) {
-        List<ExamDTO> exams = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable).stream().map(examMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+    public Page<ExamDTO> findBySyllabusId(Long id, Pageable pageable) {
+        Page<ExamDTO> exams = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable).map(examMapper::toDto);
         return exams.isEmpty() ? null : exams;
     }
 
     @Override
-    public List<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, Pageable pageable) {
-        Page<Exam> examsPages = examRepository.findByStudentId(id, pageable);
+    public Page<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findByStudentId(id, Pageable.unpaged());
 
         List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
 
         for (Exam exam : exams) {
+            boolean found = false;
             for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
-                if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(exam);
+                if (Objects.equals(professor.getId(), teacherId)) {
+                    found = true;
                     break;
                 }
             }
+            if (!found){
+                examsFiltered.remove(exam);
+            }
         }
 
-        Page<Exam> examsPageable = new PageImpl<>(exams, pageable,exams.size());
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
 
-        return examsPageable.stream().map(examMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return examsPageable;
     }
 
     @Override
-    public List<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, Pageable pageable) {
-        Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable);
+    public Page<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, Pageable.unpaged());
 
         List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
 
         for (Exam exam : exams) {
+            boolean found = false;
             for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
-                if (!Objects.equals(professor.getId(), teacherId)) {
-                    exams.remove(exam);
+                if (Objects.equals(professor.getId(), teacherId)) {
+                    found = true;
                     break;
                 }
             }
+            if (!found){
+                examsFiltered.remove(exam);
+            }
         }
 
-        Page<Exam> examsPageable = new PageImpl<>(exams, pageable,exams.size());
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
 
-        return examsPageable.stream().map(examMapper::toDto).collect(Collectors.toCollection(LinkedList::new));
+        return examsPageable;
     }
 
     @Override
@@ -129,8 +139,32 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public List<Exam> findAll() {
-        return examRepository.findAll();
+    public Page<ExamDTO> findAll(Pageable pageable) {
+        return examRepository.findAll(pageable).map(examMapper::toDto);
+    }
+
+    @Override
+    public Page<ExamDTO> findAllForTeacher(Long teacherId, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findAll(Pageable.unpaged());
+
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
+
+        for (Exam exam : exams) {
+            boolean found = false;
+            for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
+                if (Objects.equals(professor.getId(), teacherId)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found){
+                examsFiltered.remove(exam);
+            }
+        }
+
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
+        return examsPageable;
     }
 
     @Override
