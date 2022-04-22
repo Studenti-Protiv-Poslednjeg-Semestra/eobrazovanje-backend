@@ -25,8 +25,7 @@ public class Major {
     private Integer duration;
 
     @Column(nullable = false)
-    private Integer totalETCS;
-
+    private Integer totalECTS;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Student> students;
