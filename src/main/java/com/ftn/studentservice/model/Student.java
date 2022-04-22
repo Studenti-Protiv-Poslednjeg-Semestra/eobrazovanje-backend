@@ -16,6 +16,7 @@ import java.util.Set;
 public class Student {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(orphanRemoval = true)
@@ -45,7 +46,6 @@ public class Student {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Responsibility> responsibilities;
-
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Exam> exams = new java.util.LinkedHashSet<>();

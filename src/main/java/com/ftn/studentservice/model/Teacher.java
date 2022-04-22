@@ -17,6 +17,7 @@ import java.util.Set;
 public class Teacher {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(mappedBy = "professors", cascade = CascadeType.REFRESH)
@@ -29,6 +30,5 @@ public class Teacher {
     @JoinColumn(name = "user_id")
     @MapsId
     private User user;
-
 
 }

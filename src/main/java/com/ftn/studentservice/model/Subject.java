@@ -16,8 +16,7 @@ import java.util.Set;
 @Entity
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Code must not be left out!")
@@ -49,8 +48,6 @@ public class Subject {
     @NotNull(message = "ECTS must not be left out!")
     @Column(nullable = false)
     private Integer ECTS;
-
-
 
     @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "subject_professors",

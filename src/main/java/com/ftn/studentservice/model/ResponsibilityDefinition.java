@@ -16,7 +16,7 @@ import java.util.Set;
 public class ResponsibilityDefinition {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -26,7 +26,6 @@ public class ResponsibilityDefinition {
     @Enumerated(EnumType.STRING)
     @Column
     private ResponsibilityType responsibilityType;
-
 
     @OneToMany(mappedBy = "responsibilityDefinition", orphanRemoval = true)
     private Set<Responsibility> responsibilities;
