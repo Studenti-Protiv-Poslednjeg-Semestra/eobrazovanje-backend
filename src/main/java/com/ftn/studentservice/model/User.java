@@ -18,19 +18,23 @@ import java.util.Set;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
+
     @Column(nullable = false, unique = true)
     private String email;
+
     @Column(nullable = false)
     private String password;
+
     @Column(nullable = false, unique = true)
     private String UCN;
-
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -48,8 +52,7 @@ public class User implements UserDetails {
         return password;
     }
 
-
-    // Spring security works with usernames witch in our case is an email.
+    // Spring security works with usernames which, in our case, is an email.
     @Override
     public String getUsername() {
         return this.email;
@@ -75,13 +78,4 @@ public class User implements UserDetails {
         return true;
     }
 
-
-
-    //I commented out role because i feel like it
-    // is going to be redundant once we implement
-    // spring security and assign Authorities to the
-    // User - WLQMPEK
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private Role role;
 }
