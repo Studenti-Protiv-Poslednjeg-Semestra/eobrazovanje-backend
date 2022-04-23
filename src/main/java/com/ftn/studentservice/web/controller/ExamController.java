@@ -204,15 +204,16 @@ public class ExamController {
 
     @PreAuthorize("hasAnyRole('ADMIN','STUDENT')")
     @PostMapping(value = "application")
-    public ResponseEntity<ExamDTO> createExamApplication(Principal principal,
-                                                            @PathParam(value = "exam_schedule_id") Long examScheduleId,
-                                                            @PathParam(value = "student_id") Long studentId){
+    public ResponseEntity<ExamDTO> createExamApplication(Principal principal, @RequestBody Map<String,String> params){
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
             role = ga.getAuthority();
         }
         System.out.println("role:" + role);
+
+        Long studentId = Long.valueOf(params.get("studentId"));
+        Long examScheduleId = Long.valueOf(params.get("examScheduleId"));
 
         // STUDENT
         // validate if student creating exam application is the same

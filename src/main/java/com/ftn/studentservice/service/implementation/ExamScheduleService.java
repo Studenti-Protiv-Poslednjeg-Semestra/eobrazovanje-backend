@@ -8,6 +8,7 @@ import com.ftn.studentservice.web.dto.ExamScheduleDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExamScheduleService implements IExamScheduleService {
@@ -32,8 +33,8 @@ public class ExamScheduleService implements IExamScheduleService {
     }
 
     @Override
-    public List<ExamSchedule> findAll() {
-        return examScheduleRepository.findAll();
+    public List<ExamScheduleDTO> findAll() {
+        return examScheduleRepository.findAll().stream().map(examScheduleMapper::toDto).collect(Collectors.toList());
     }
 
     @Override

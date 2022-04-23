@@ -9,7 +9,7 @@ public interface IExamScheduleService {
 
     ExamSchedule findOne(Long id);
 
-    List<ExamSchedule> findAll();
+    List<ExamScheduleDTO> findAll();
 
     ExamScheduleDTO save(ExamScheduleDTO examScheduleDTO);
 
