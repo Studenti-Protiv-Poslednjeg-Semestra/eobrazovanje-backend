@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -20,17 +21,17 @@ public class Enrollment {
     @GeneratedValue
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REFRESH, orphanRemoval = true)
+    @NotNull
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @NotNull
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @Column
-    @Min(5)
-    @Max(10)
     private Integer grade;
 
 }

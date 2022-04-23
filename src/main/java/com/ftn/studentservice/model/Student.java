@@ -16,6 +16,7 @@ import java.util.Set;
 public class Student {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(orphanRemoval = true)
@@ -34,6 +35,9 @@ public class Student {
     @JoinColumn(name = "major_id")
     private Major major;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
+    private Set<Enrollment> enrollments = new java.util.LinkedHashSet<>();
+
     @OneToMany(mappedBy = "student", orphanRemoval = true)
     private Set<Document> documents;
 
@@ -42,7 +46,6 @@ public class Student {
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Responsibility> responsibilities;
-
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Exam> exams = new java.util.LinkedHashSet<>();

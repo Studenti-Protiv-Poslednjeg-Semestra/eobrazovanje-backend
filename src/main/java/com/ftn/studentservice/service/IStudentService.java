@@ -11,6 +11,8 @@ public interface IStudentService {
 
     List<StudentDTO> findAll();
 
+    StudentDTO addStudentToSyllabus(Long studentId, Long syllabusId);
+
     Student save(Student student);
 
     void delete(Long id);

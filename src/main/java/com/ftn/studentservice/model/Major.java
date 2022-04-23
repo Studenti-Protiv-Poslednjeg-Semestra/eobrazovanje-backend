@@ -15,7 +15,7 @@ import java.util.Set;
 public class Major {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -25,12 +25,12 @@ public class Major {
     private Integer duration;
 
     @Column(nullable = false)
-    private Integer totalETCS;
-
+    private Integer totalECTS;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Student> students;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
+    @ToString.Exclude
     private Set<Syllabus> syllabuses;
 }

@@ -16,7 +16,7 @@ import java.time.LocalDate;
 public class Responsibility {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
