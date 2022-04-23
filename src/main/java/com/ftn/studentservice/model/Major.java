@@ -21,10 +21,13 @@ public class Major {
     @Column(nullable = false)
     private String name;
 
+    /**
+    IN SEMESTERS not years
+    */
     @Column(nullable = false)
     private Integer duration;
 
-    @Column(nullable = false)
+    @Column(insertable = false, updatable = false, columnDefinition = "INT AS ((duration / 2) * 60)")
     private Integer totalECTS;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
@@ -33,4 +36,5 @@ public class Major {
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
     @ToString.Exclude
     private Set<Syllabus> syllabuses;
+
 }

@@ -1,6 +1,9 @@
 package com.ftn.studentservice.web.controller;
 
+import com.ftn.studentservice.model.Subject;
 import com.ftn.studentservice.service.implementation.SubjectService;
+import com.ftn.studentservice.util.mapper.SubjectMapperImpl;
+import com.ftn.studentservice.web.dto.SubjectCreationDTO;
 import com.ftn.studentservice.web.dto.SubjectDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,19 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/subject")
+@RequestMapping("/api/v1/subjects")
 public class SubjectController {
 
     private final SubjectService subjectService;
+    private final SubjectMapperImpl subjectMapper;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @PostMapping("/")
-    public ResponseEntity<?> createSubject(@RequestBody SubjectDTO dto) {
+    @PostMapping
+    public ResponseEntity<?> createSubject(@RequestBody SubjectCreationDTO dto) {
         try {
-            subjectService.createSubject(dto);
+            Subject newSubject = subjectMapper.toEntity(dto);
+            subjectService.createSubject(newSubject);
             return new ResponseEntity<>(null, HttpStatus.CREATED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(ex.getCause(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
