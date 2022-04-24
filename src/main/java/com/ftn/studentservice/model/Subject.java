@@ -1,4 +1,5 @@
 package com.ftn.studentservice.model;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.Set;
 //End of lombok
 @Entity
 public class Subject {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +32,6 @@ public class Subject {
     @NotNull(message = "Name must not be left out!")
     @Column(nullable = false)
     private String name;
-
 
     @Max(message = "Semester must be lesser than 8", value = 8)
     @Min(message = "Semester must be greater than 1", value = 1)

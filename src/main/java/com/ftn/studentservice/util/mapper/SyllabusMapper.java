@@ -13,4 +13,8 @@ public interface SyllabusMapper {
 
     @Mapping(target = "major", source = "majorDTO")
     Syllabus toEntity(SyllabusDTO syllabusDTO);
+
+    @Mapping(target = "id", source = "id")
+    Syllabus toEntity(Long id);
+
 }
