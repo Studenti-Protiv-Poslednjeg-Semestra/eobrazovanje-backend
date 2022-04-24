@@ -4,50 +4,108 @@ import com.ftn.studentservice.model.*;
 import com.ftn.studentservice.repository.ExamRepository;
 import com.ftn.studentservice.service.IExamService;
 import com.ftn.studentservice.util.mapper.ExamMapper;
+import com.ftn.studentservice.util.mapper.ExamScheduleMapper;
 import com.ftn.studentservice.web.dto.ExamDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ExamService implements IExamService {
 
     private final ExamRepository examRepository;
     private final ExamMapper examMapper;
+    private final ExamScheduleMapper examScheduleMapper;
     private final EnrollmentService enrollmentService;
     private final SyllabusService syllabusService;
     private final StudentService studentService;
     private final ExamScheduleService examScheduleService;
 
-    public ExamService(ExamRepository examRepository, ExamMapper examMapper, EnrollmentService enrollmentService,
-                       SyllabusService syllabusService, StudentService studentService, ExamScheduleService examScheduleService) {
+    public ExamService(ExamRepository examRepository, ExamMapper examMapper, ExamScheduleMapper examScheduleMapper,
+                       EnrollmentService enrollmentService, SyllabusService syllabusService, StudentService studentService,
+                       ExamScheduleService examScheduleService) {
         this.examRepository = examRepository;
         this.examMapper = examMapper;
+        this.examScheduleMapper = examScheduleMapper;
         this.enrollmentService = enrollmentService;
         this.syllabusService = syllabusService;
         this.studentService = studentService;
         this.examScheduleService = examScheduleService;
     }
 
-
     @Override
-    public Page<ExamDTO> findByStudentId(Long id, Pageable pageable) {
-        Page<ExamDTO> exams = examRepository.findByStudentId(id, pageable).map(examMapper::toDto);
-        return exams.isEmpty() ? null : exams;
+    public Page<ExamDTO> findByStudentId(Long id, String examType, String viewType, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findByStudentId(id, Pageable.unpaged());
+
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
+
+        for (Exam exam : exams) {
+            boolean found = false;
+            if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now())){
+                if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                    found = true;
+                }
+                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                    found = true;
+                }
+            }
+            else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                found = true;
+            }
+
+            if (!found){
+                examsFiltered.remove(exam);
+            }
+        }
+
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
+
+        return examsPageable;
     }
 
     @Override
-    public Page<ExamDTO> findBySyllabusId(Long id, Pageable pageable) {
-        Page<ExamDTO> exams = examRepository.findByExamScheduleSubjectSyllabusId(id, pageable).map(examMapper::toDto);
-        return exams.isEmpty() ? null : exams;
+    public List<Exam> findByStudentId(Long id) {
+        return examRepository.findByStudentId(id);
     }
 
     @Override
-    public Page<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, Pageable pageable) {
+    public Page<ExamDTO> findBySyllabusId(Long id, String examType, String viewType, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, Pageable.unpaged());
+
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
+
+        for (Exam exam : exams) {
+            boolean found = false;
+            if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now())){
+                if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                    found = true;
+                }
+                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                    found = true;
+                }
+            }
+            else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                found = true;
+            }
+
+            if (!found){
+                examsFiltered.remove(exam);
+            }
+        }
+
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
+
+        return examsPageable;
+    }
+
+    @Override
+    public Page<ExamDTO> findByStudentIdForTeacher(Long id, Long teacherId, String examType, String viewType, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByStudentId(id, Pageable.unpaged());
 
         List<Exam> exams = new LinkedList<>(examsPages.getContent());
@@ -57,8 +115,20 @@ public class ExamService implements IExamService {
             boolean found = false;
             for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (Objects.equals(professor.getId(), teacherId)) {
-                    found = true;
-                    break;
+                    if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now())){
+                        if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                            found = true;
+                            break;
+                        }
+                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                            found = true;
+                            break;
+                        }
+                    }
+                    else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found){
@@ -72,7 +142,7 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public Page<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, Pageable pageable) {
+    public Page<ExamDTO> findBySyllabusIdForTeacher(Long id, Long teacherId, String examType, String viewType, Pageable pageable) {
         Page<Exam> examsPages = examRepository.findByExamScheduleSubjectSyllabusId(id, Pageable.unpaged());
 
         List<Exam> exams = new LinkedList<>(examsPages.getContent());
@@ -82,8 +152,20 @@ public class ExamService implements IExamService {
             boolean found = false;
             for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (Objects.equals(professor.getId(), teacherId)) {
-                    found = true;
-                    break;
+                    if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now())){
+                        if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                            found = true;
+                            break;
+                        }
+                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                            found = true;
+                            break;
+                        }
+                    }
+                    else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found){
@@ -139,12 +221,37 @@ public class ExamService implements IExamService {
     }
 
     @Override
-    public Page<ExamDTO> findAll(Pageable pageable) {
-        return examRepository.findAll(pageable).map(examMapper::toDto);
+    public Page<ExamDTO> findAll(String examType, String viewType, Pageable pageable) {
+        Page<Exam> examsPages = examRepository.findAll(Pageable.unpaged());
+
+        List<Exam> exams = new LinkedList<>(examsPages.getContent());
+        List<Exam> examsFiltered = new LinkedList<>(examsPages.getContent());
+
+        for (Exam exam : exams) {
+            boolean found = false;
+            if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now())){
+                if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                    found = true;
+                }
+                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                    found = true;
+                }
+            }
+            else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                found = true;
+            }
+
+            if (!found){
+                examsFiltered.remove(exam);
+            }
+        }
+
+        Page<ExamDTO> examsPageable = new PageImpl<>(examsFiltered, pageable,examsFiltered.size()).map(examMapper::toDto);
+        return examsPageable;
     }
 
     @Override
-    public Page<ExamDTO> findAllForTeacher(Long teacherId, Pageable pageable) {
+    public Page<ExamDTO> findAllForTeacher(Long teacherId, String examType,String viewType,Pageable pageable) {
         Page<Exam> examsPages = examRepository.findAll(Pageable.unpaged());
 
         List<Exam> exams = new LinkedList<>(examsPages.getContent());
@@ -154,8 +261,20 @@ public class ExamService implements IExamService {
             boolean found = false;
             for (Teacher professor : exam.getExamSchedule().getSubject().getProfessors()) {
                 if (Objects.equals(professor.getId(), teacherId)) {
-                    found = true;
-                    break;
+                    if (examType.equals("finished") && exam.getExamSchedule().getTimeOfExam().isBefore(LocalDateTime.now()) && viewType != null){
+                        if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
+                            found = true;
+                            break;
+                        }
+                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                            found = true;
+                            break;
+                        }
+                    }
+                    else if (examType.equals("unfinished") && exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+                        found = true;
+                        break;
+                    }
                 }
             }
             if (!found){
@@ -199,17 +318,12 @@ public class ExamService implements IExamService {
             return null;
         }
 
+        if (exam.getExamSchedule().getTimeOfExam().isAfter(LocalDateTime.now())){
+            // updating exam schedule
+            exam.setExamSchedule(examScheduleMapper.toEntity(examDTO.getExamScheduleDTO()));
+        }
         // updating basic info
         exam.setPoints(examDTO.getPoints());
-
-        // updating exam schedule
-        exam.getExamSchedule().setTimeOfExam(examDTO.getExamScheduleDTO().getTimeOfExam());
-        exam.getExamSchedule().setPlace(examDTO.getExamScheduleDTO().getPlace());
-
-        // updating examination period
-        exam.getExamSchedule().getExaminationPeriod().setName(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getName());
-        exam.getExamSchedule().getExaminationPeriod().setStartDate(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getStartDate());
-        exam.getExamSchedule().getExaminationPeriod().setEndDate(examDTO.getExamScheduleDTO().getExaminationPeriodDTO().getEndDate());
 
         return examMapper.toDto(save(exam));
     }

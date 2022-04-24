@@ -36,7 +36,13 @@ public class ExamController {
     @GetMapping
     public ResponseEntity<Page<ExamDTO>> getAllExams(Principal principal,
                                                      @PathParam(value = "page") Integer page,
-                                                     @PathParam(value = "itemsPerPage") Integer itemsPerPage) {
+                                                     @PathParam(value = "itemsPerPage") Integer itemsPerPage,
+                                                     @PathParam(value = "examType") String examType,
+                                                     @RequestParam(value = "viewType",required = false) String viewType) {
+        if (!examType.equals("unfinished") && !examType.equals("finished")){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
@@ -44,11 +50,11 @@ public class ExamController {
         }
 
         if (role.equals("ROLE_TEACHER")) {
-            Page<ExamDTO> allExamsForTeacher = examService.findAllForTeacher(user.getId(),PageRequest.of(page, itemsPerPage));
+            Page<ExamDTO> allExamsForTeacher = examService.findAllForTeacher(user.getId(),examType,viewType,PageRequest.of(page, itemsPerPage));
             return new ResponseEntity<Page<ExamDTO>>(allExamsForTeacher, HttpStatus.OK);
         }
 
-        Page<ExamDTO> allExams = examService.findAll(PageRequest.of(page, itemsPerPage));
+        Page<ExamDTO> allExams = examService.findAll(examType,viewType,PageRequest.of(page, itemsPerPage));
         return new ResponseEntity<Page<ExamDTO>>(allExams, HttpStatus.OK);
     }
 
@@ -71,7 +77,7 @@ public class ExamController {
         // validate if student requesting exam data is the same
         // student that that data belongs to
         if (role.equals("ROLE_STUDENT")) {
-            if (!Objects.equals(examDTO.getStudentDTO().getId(), user.getId())) {
+            if (!Objects.equals(examDTO.getStudentDTO().getUserDTO().getId(), user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         }
@@ -80,7 +86,7 @@ public class ExamController {
         // validate if teacher requesting exam data is actually
         // the teacher of the subject and student of the exam.
         if (role.equals("ROLE_TEACHER")) {
-            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getId(), user.getId())) {
+            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getUserDTO().getId(), user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         }
@@ -92,7 +98,13 @@ public class ExamController {
     @GetMapping(value = "student/{id}")
     public ResponseEntity<Page<ExamDTO>> allExamsForStudent(Principal principal, @PathVariable Long id,
                                                             @PathParam(value = "page") Integer page,
-                                                            @PathParam(value = "itemsPerPage") Integer itemsPerPage){
+                                                            @PathParam(value = "itemsPerPage") Integer itemsPerPage,
+                                                            @PathParam(value = "examType") String examType,
+                                                            @RequestParam(value = "viewType",required = false) String viewType){
+        if (!examType.equals("unfinished") && !examType.equals("finished")){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
@@ -121,12 +133,12 @@ public class ExamController {
             if (!examService.teacherAuthorizedForStudent(id, user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            Page<ExamDTO> examsForStudentForTeacher = examService.findByStudentIdForTeacher(id, user.getId(),PageRequest.of(page, itemsPerPage));
+            Page<ExamDTO> examsForStudentForTeacher = examService.findByStudentIdForTeacher(id, user.getId(), examType, viewType, PageRequest.of(page, itemsPerPage));
 
             return new ResponseEntity<Page<ExamDTO>>(examsForStudentForTeacher, HttpStatus.OK);
         }
 
-        Page<ExamDTO> examsForStudent = examService.findByStudentId(id, PageRequest.of(page, itemsPerPage));
+        Page<ExamDTO> examsForStudent = examService.findByStudentId(id, examType, viewType, PageRequest.of(page, itemsPerPage));
 
         return new ResponseEntity<Page<ExamDTO>>(examsForStudent, HttpStatus.OK);
     }
@@ -135,7 +147,13 @@ public class ExamController {
     @GetMapping(value = "syllabus/{id}")
     public ResponseEntity<Page<ExamDTO>> allExamsForSyllabus(Principal principal, @PathVariable Long id,
                                                              @PathParam(value = "page") Integer page,
-                                                             @PathParam(value = "itemsPerPage") Integer itemsPerPage){
+                                                             @PathParam(value = "itemsPerPage") Integer itemsPerPage,
+                                                             @PathParam(value = "examType") String examType,
+                                                             @RequestParam(value = "viewType",required = false) String viewType){
+        if (!examType.equals("unfinished") && !examType.equals("finished")){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         User user = userService.findUserByEmail(principal.getName());
         String role = "";
         for (GrantedAuthority ga : user.getAuthorities()) {
@@ -155,13 +173,13 @@ public class ExamController {
             if (!examService.teacherAuthorizedForSyllabus(id, user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            Page<ExamDTO> examsForSyllabusForTeacher = examService.findBySyllabusIdForTeacher(id, user.getId(),PageRequest.of(page, itemsPerPage));
+            Page<ExamDTO> examsForSyllabusForTeacher = examService.findBySyllabusIdForTeacher(id, user.getId(), examType, viewType, PageRequest.of(page, itemsPerPage));
 
             return new ResponseEntity<Page<ExamDTO>>(examsForSyllabusForTeacher, HttpStatus.OK);
         }
 
         // ADMIN
-        Page<ExamDTO> examsForSyllabus = examService.findBySyllabusId(id, PageRequest.of(page, itemsPerPage));
+        Page<ExamDTO> examsForSyllabus = examService.findBySyllabusId(id, examType, viewType, PageRequest.of(page, itemsPerPage));
 
         return new ResponseEntity<Page<ExamDTO>>(examsForSyllabus, HttpStatus.OK);
     }
@@ -192,7 +210,7 @@ public class ExamController {
         // validate if teacher requesting edit of exam data is actually
         // the teacher of the subject and student of the exam
         if (role.equals("ROLE_TEACHER")) {
-            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getId(), user.getId())) {
+            if (!examService.teacherAuthorizedForStudent(examDTO.getStudentDTO().getUserDTO().getId(), user.getId())) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         }
@@ -230,6 +248,32 @@ public class ExamController {
         }
 
         return new ResponseEntity<>(examDTO, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT')")
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Void> cancelExam(Principal principal, @PathVariable(value = "id") final Long id){
+        ExamDTO examDTO = examService.findOne(id);
+        if (examDTO == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        User user = userService.findUserByEmail(principal.getName());
+        String role = "";
+        for (GrantedAuthority ga : user.getAuthorities()) {
+            role = ga.getAuthority();
+        }
+        System.out.println("role:" + role);
+
+        // STUDENT
+        if (role.equals("ROLE_STUDENT")) {
+            if (!Objects.equals(examDTO.getStudentDTO().getUserDTO().getId(), user.getId())){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        examService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -11,6 +11,11 @@ public interface IExamScheduleService {
 
     List<ExamScheduleDTO> findAll();
 
+    Boolean teacherAuthorizedForSubject(Long teacherId, Long subjectId);
+    List<ExamScheduleDTO> findBySubjectId(Long subjectId);
+
+    List<ExamScheduleDTO> findAllForStudent(Long studentId);
+
     ExamScheduleDTO save(ExamScheduleDTO examScheduleDTO);
 
     void delete(Long id);

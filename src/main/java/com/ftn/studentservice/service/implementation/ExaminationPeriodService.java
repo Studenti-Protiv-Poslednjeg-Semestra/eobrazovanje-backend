@@ -7,6 +7,7 @@ import com.ftn.studentservice.util.mapper.ExaminationPeriodMapper;
 import com.ftn.studentservice.web.dto.ExaminationPeriodDTO;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,16 @@ public class ExaminationPeriodService implements IExaminationPeriodService {
 
     @Override
     public List<ExaminationPeriodDTO> findAll() {
-        return examinationPeriodRepository.findAll().stream().map(examinationPeriodMapper::toDto).collect(Collectors.toList());
+        List<ExaminationPeriodDTO> examinationPeriodDTOS = examinationPeriodRepository.findAll().stream().map(examinationPeriodMapper::toDto).collect(Collectors.toList());
+        List<ExaminationPeriodDTO> examinationPeriodFiltered = examinationPeriodRepository.findAll().stream().map(examinationPeriodMapper::toDto).collect(Collectors.toList());
+
+        for (ExaminationPeriodDTO examinationPeriodDTO : examinationPeriodDTOS){
+            if (examinationPeriodDTO.getEndDate().isBefore(LocalDate.now())){
+                examinationPeriodFiltered.remove(examinationPeriodDTO);
+            }
+        }
+
+        return examinationPeriodFiltered;
     }
 
     @Override
