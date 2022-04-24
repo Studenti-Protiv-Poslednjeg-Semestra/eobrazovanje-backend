@@ -1,4 +1,5 @@
 package com.ftn.studentservice.model;
+
 import lombok.*;
 
 import javax.persistence.*;

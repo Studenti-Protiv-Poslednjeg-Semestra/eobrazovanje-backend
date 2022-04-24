@@ -1,11 +1,8 @@
 package com.ftn.studentservice.service.implementation;
 
 import com.ftn.studentservice.model.Subject;
-import com.ftn.studentservice.model.Syllabus;
 import com.ftn.studentservice.repository.SubjectRepository;
-import com.ftn.studentservice.repository.SyllabusRepository;
 import com.ftn.studentservice.service.ISubjectService;
-import com.ftn.studentservice.util.mapper.SubjectMapperImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,10 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SubjectService implements ISubjectService {
 
-    private final SubjectMapperImpl subjectMapper;
-
     private final SubjectRepository subjectRepository;
-    private final SyllabusRepository syllabusRepository;
 
     @Override
     public Subject findOne(Long id) {

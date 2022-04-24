@@ -4,7 +4,6 @@ import com.ftn.studentservice.model.Subject;
 import com.ftn.studentservice.service.implementation.SubjectService;
 import com.ftn.studentservice.util.mapper.SubjectMapperImpl;
 import com.ftn.studentservice.web.dto.SubjectCreationDTO;
-import com.ftn.studentservice.web.dto.SubjectDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +24,11 @@ public class SubjectController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createSubject(@RequestBody SubjectCreationDTO dto) {
-        try {
-            Subject newSubject = subjectMapper.toEntity(dto);
-            subjectService.createSubject(newSubject);
-            return new ResponseEntity<>(null, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Subject newSubject = subjectMapper.toEntity(dto);
+
+        subjectService.createSubject(newSubject);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
