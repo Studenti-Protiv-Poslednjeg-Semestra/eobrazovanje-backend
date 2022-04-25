@@ -24,6 +24,7 @@ public class ExamService implements IExamService {
     private final SyllabusService syllabusService;
     private final StudentService studentService;
     private final ExamScheduleService examScheduleService;
+    private final double examRegistrationFee = 200;
 
     public ExamService(ExamRepository examRepository, ExamMapper examMapper, ExamScheduleMapper examScheduleMapper,
                        EnrollmentService enrollmentService, SyllabusService syllabusService, StudentService studentService,
@@ -50,7 +51,7 @@ public class ExamService implements IExamService {
                 if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
                     found = true;
                 }
-                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                     found = true;
                 }
             }
@@ -86,7 +87,7 @@ public class ExamService implements IExamService {
                 if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
                     found = true;
                 }
-                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                     found = true;
                 }
             }
@@ -120,7 +121,7 @@ public class ExamService implements IExamService {
                             found = true;
                             break;
                         }
-                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                        else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                             found = true;
                             break;
                         }
@@ -157,7 +158,7 @@ public class ExamService implements IExamService {
                             found = true;
                             break;
                         }
-                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                        else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                             found = true;
                             break;
                         }
@@ -233,7 +234,7 @@ public class ExamService implements IExamService {
                 if (viewType.equals("passed") && exam.getPoints() != null && exam.getPoints() > 50){
                     found = true;
                 }
-                else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                     found = true;
                 }
             }
@@ -266,7 +267,7 @@ public class ExamService implements IExamService {
                             found = true;
                             break;
                         }
-                        else if (viewType.equals("unpassed") && (exam.getPoints() == null || exam.getPoints() <51)){
+                        else if (viewType.equals("failed") && (exam.getPoints() == null || exam.getPoints() <51)){
                             found = true;
                             break;
                         }
@@ -300,6 +301,14 @@ public class ExamService implements IExamService {
             return null;
         }
 
+        if(student.getFunds() - this.examRegistrationFee < 0){
+            return null;
+        }
+
+        // updating student's funds
+        student.setFunds(student.getFunds() - this.examRegistrationFee);
+        // studentService.save(student);
+
         Exam exam = new Exam();
         exam.setExamSchedule(examSchedule);
         exam.setStudent(student);
@@ -330,6 +339,12 @@ public class ExamService implements IExamService {
 
     @Override
     public void delete(Long id) {
-        examRepository.deleteById(id);
+        if (examRepository.findById(id).isPresent()){
+            Exam exam = examRepository.findById(id).get();
+            // updating student's funds
+            exam.getStudent().setFunds(exam.getStudent().getFunds() + this.examRegistrationFee);
+            studentService.save(exam.getStudent());
+            examRepository.deleteById(id);
+        }
     }
 }
