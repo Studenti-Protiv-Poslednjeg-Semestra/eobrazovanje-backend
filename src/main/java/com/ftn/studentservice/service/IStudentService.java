@@ -9,7 +9,7 @@ public interface IStudentService {
 
     Student findOne(Long id);
 
-    List<Student> findAll();
+    List<StudentDTO> findAll();
 
     StudentDTO addStudentToSyllabus(Long studentId, Long syllabusId);
 

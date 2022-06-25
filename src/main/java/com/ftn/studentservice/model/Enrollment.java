@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @RequiredArgsConstructor
 //@NoArgsConstructor
 @AllArgsConstructor

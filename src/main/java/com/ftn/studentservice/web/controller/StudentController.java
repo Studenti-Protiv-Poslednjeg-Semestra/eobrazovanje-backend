@@ -7,8 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
 @RestController
-@RequestMapping(value = "api/v1/student")
+@RequestMapping(value = "students")
 public class StudentController {
 
     private final IStudentService iStudentService;
@@ -23,9 +26,16 @@ public class StudentController {
         return new ResponseEntity<>(iStudentService.addStudentToSyllabus(studentId, syllabusId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        List<StudentDTO> allStudents = iStudentService.findAll();
+        return new ResponseEntity<List<StudentDTO>>(allStudents, HttpStatus.OK);
+
     @PreAuthorize(value = "hasAnyRole('STUDENT')")
     @PutMapping("/{studentId}/semester")
     public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@PathVariable Long studentId){
         return new ResponseEntity<>(iStudentService.enrollmentOnNextSemester(studentId), HttpStatus.OK);
+
     }
 }

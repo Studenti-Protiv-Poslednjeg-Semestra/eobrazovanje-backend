@@ -16,6 +16,7 @@ import com.ftn.studentservice.web.dto.StudentDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService implements IStudentService {
@@ -42,8 +43,8 @@ public class StudentService implements IStudentService {
     }
 
     @Override
-    public List<Student> findAll() {
-        return studentRepository.findAll();
+    public List<StudentDTO> findAll() {
+        return studentRepository.findAll().stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
