@@ -19,7 +19,7 @@ public class Syllabus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(insertable = false, updatable = false, columnDefinition="DATE DEFAULT (CURRENT_TIMESTAMP)")
     private LocalDate yearOfCreation;
 
     @OneToMany(mappedBy = "syllabus", cascade = CascadeType.REFRESH, orphanRemoval = true)

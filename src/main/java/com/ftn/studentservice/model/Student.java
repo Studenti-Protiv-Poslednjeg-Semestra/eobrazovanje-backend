@@ -3,6 +3,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -31,9 +32,16 @@ public class Student {
     @Column(nullable = false)
     private Integer semester;
 
+    @Column(nullable = false)
+    private LocalDate yearOfEnrollment;
+
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "major_id")
     private Major major;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "syllabus_id")
+    private Syllabus syllabus;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
     private Set<Enrollment> enrollments = new java.util.LinkedHashSet<>();

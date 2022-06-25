@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value = "students")
 public class StudentController {
@@ -30,5 +31,11 @@ public class StudentController {
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> allStudents = iStudentService.findAll();
         return new ResponseEntity<List<StudentDTO>>(allStudents, HttpStatus.OK);
+
+    @PreAuthorize(value = "hasAnyRole('STUDENT')")
+    @PutMapping("/{studentId}/semester")
+    public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@PathVariable Long studentId){
+        return new ResponseEntity<>(iStudentService.enrollmentOnNextSemester(studentId), HttpStatus.OK);
+
     }
 }

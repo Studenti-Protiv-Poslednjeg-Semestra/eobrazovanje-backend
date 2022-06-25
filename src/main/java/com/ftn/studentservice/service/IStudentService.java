@@ -13,6 +13,8 @@ public interface IStudentService {
 
     StudentDTO addStudentToSyllabus(Long studentId, Long syllabusId);
 
+    StudentDTO enrollmentOnNextSemester(Long studentId);
+
     Student save(Student student);
 
     void delete(Long id);
