@@ -8,7 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/api/v1/teacher")
+@RequestMapping(value = "teacher")
 public class TeacherController {
 
     private final ITeacherService iTeacherService;

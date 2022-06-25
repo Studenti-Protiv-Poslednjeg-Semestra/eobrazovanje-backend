@@ -26,7 +26,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/subjects")
+@RequestMapping("subjects")
 public class SubjectController {
 
     private final SubjectService subjectService;
@@ -40,7 +40,8 @@ public class SubjectController {
         subjectService.createSubject(newSubject);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
-      
+    }
+
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<SubjectDTO>> getAllSubjects() {
