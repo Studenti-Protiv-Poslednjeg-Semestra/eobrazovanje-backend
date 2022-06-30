@@ -11,6 +11,8 @@ public interface IStudentService {
 
     List<StudentDTO> findAll();
 
+    List<StudentDTO> findNewStudents();
+
     StudentDTO addStudentToSyllabus(Long studentId, Long syllabusId);
 
     StudentDTO enrollmentOnNextSemester(Long studentId);

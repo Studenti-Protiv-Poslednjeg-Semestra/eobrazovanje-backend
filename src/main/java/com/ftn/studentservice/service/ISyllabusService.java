@@ -1,6 +1,7 @@
 package com.ftn.studentservice.service;
 
 import com.ftn.studentservice.model.Syllabus;
+import com.ftn.studentservice.web.dto.SyllabusDTO;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public interface ISyllabusService {
 
     Syllabus findOne(Long id);
 
-    List<Syllabus> findAll();
+    List<SyllabusDTO> findAll();
 
     Syllabus save(Syllabus syllabus);
 
