@@ -7,14 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "teacher")
+@RequestMapping(value = "teachers")
 public class TeacherController {
 
     private final ITeacherService iTeacherService;
 
     public TeacherController(ITeacherService iTeacherService) {
         this.iTeacherService = iTeacherService;
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<TeacherDTO>> getTeachers(@RequestParam(value = "page") Integer page){
+        return new ResponseEntity<>(iTeacherService.findAll(page), HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")

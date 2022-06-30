@@ -6,13 +6,14 @@ import com.ftn.studentservice.repository.SubjectRepository;
 import com.ftn.studentservice.repository.TeacherRepository;
 import com.ftn.studentservice.service.ITeacherService;
 import com.ftn.studentservice.util.exception.EntityNotFoundException;
-import com.ftn.studentservice.util.mapper.SubjectMapper;
 import com.ftn.studentservice.util.mapper.TeacherMapper;
-import com.ftn.studentservice.web.dto.SubjectDTO;
 import com.ftn.studentservice.web.dto.TeacherDTO;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeacherService implements ITeacherService {
@@ -20,6 +21,7 @@ public class TeacherService implements ITeacherService {
     private final TeacherRepository teacherRepository;
     private final SubjectRepository subjectRepository;
     private final TeacherMapper teacherMapper;
+    private static final Integer SIZE = 10;
 
     public TeacherService(TeacherRepository teacherRepository, SubjectRepository subjectRepository, TeacherMapper teacherMapper) {
         this.teacherRepository = teacherRepository;
@@ -33,8 +35,8 @@ public class TeacherService implements ITeacherService {
     }
 
     @Override
-    public List<Teacher> findAll() {
-        return teacherRepository.findAll();
+    public List<TeacherDTO> findAll(Integer page) {
+        return teacherRepository.findAll(PageRequest.of(page, SIZE)).stream().map(teacherMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
