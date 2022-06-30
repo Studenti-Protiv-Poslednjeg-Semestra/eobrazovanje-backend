@@ -22,7 +22,7 @@ public class StudentController {
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PostMapping("/{studentId}/syllabus/{syllabusId}")
-    public ResponseEntity<StudentDTO> addStudentToSyllabus(@PathVariable Long studentId, @PathVariable Long syllabusId){
+    public ResponseEntity<StudentDTO> addStudentToSyllabus(@PathVariable Long studentId, @PathVariable Long syllabusId) {
         return new ResponseEntity<>(iStudentService.addStudentToSyllabus(studentId, syllabusId), HttpStatus.OK);
     }
 
@@ -38,5 +38,11 @@ public class StudentController {
     @PutMapping("/{studentId}/semester")
     public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@PathVariable Long studentId) {
         return new ResponseEntity<>(iStudentService.enrollmentOnNextSemester(studentId), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/new")
+    public ResponseEntity<List<StudentDTO>> getNewStudents() {
+        return new ResponseEntity<>(iStudentService.findNewStudents(), HttpStatus.OK);
     }
 }

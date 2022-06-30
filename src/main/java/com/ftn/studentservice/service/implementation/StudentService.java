@@ -48,6 +48,12 @@ public class StudentService implements IStudentService {
     }
 
     @Override
+    public List<StudentDTO> findNewStudents() {
+        System.err.println(studentRepository.findAllBySyllabus(null));
+        return studentRepository.findAllBySyllabus(null).stream().map(studentMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
     public StudentDTO addStudentToSyllabus(Long studentId, Long syllabusId) {
 
         Student student = studentRepository.findById(studentId).orElse(null);
