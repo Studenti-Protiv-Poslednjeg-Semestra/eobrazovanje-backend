@@ -2,6 +2,7 @@ package com.ftn.studentservice.web.controller;
 
 import com.ftn.studentservice.service.IStudentService;
 import com.ftn.studentservice.web.dto.StudentDTO;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +31,15 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents() {
         List<StudentDTO> allStudents = iStudentService.findAll();
-        return new ResponseEntity<List<StudentDTO>>(allStudents, HttpStatus.OK);
+        return new ResponseEntity<>(allStudents, HttpStatus.OK);
+
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(value = "/pagination")
+    public ResponseEntity<List<StudentDTO>> getAllStudentsPageAndSize(@RequestParam(value = "page") Integer page, @RequestParam(value = "size") Integer size) {
+        List<StudentDTO> allStudents = iStudentService.findAllPageAndSize(PageRequest.of(page, size));
+        return new ResponseEntity<>(allStudents, HttpStatus.OK);
 
     }
 
