@@ -13,6 +13,7 @@ import com.ftn.studentservice.util.exception.EntityNotFoundException;
 import com.ftn.studentservice.util.exception.NotEnoughFunds;
 import com.ftn.studentservice.util.mapper.StudentMapper;
 import com.ftn.studentservice.web.dto.StudentDTO;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +46,11 @@ public class StudentService implements IStudentService {
     @Override
     public List<StudentDTO> findAll() {
         return studentRepository.findAll().stream().map(studentMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDTO> findAllPageAndSize(PageRequest request) {
+        return studentRepository.findAll(request).stream().map(studentMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
