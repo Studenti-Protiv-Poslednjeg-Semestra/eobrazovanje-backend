@@ -23,6 +23,12 @@ public class EnrollmentService implements IEnrollmentService {
     }
 
     @Override
+    public List<Enrollment> getFinishedExams(Long studentId) {
+        Integer passingGrade = 6;
+        return enrollmentRepository.findEnrollmentsByStudent_IdAndGradeGreaterThan(studentId, passingGrade);
+    }
+
+    @Override
     public Enrollment findOne(Long id) {
         return enrollmentRepository.findById(id).orElse(null);
     }

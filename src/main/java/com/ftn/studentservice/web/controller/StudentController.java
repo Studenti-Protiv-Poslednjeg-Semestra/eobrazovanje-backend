@@ -1,5 +1,6 @@
 package com.ftn.studentservice.web.controller;
 
+import com.ftn.studentservice.service.IEnrollmentService;
 import com.ftn.studentservice.service.IStudentService;
 import com.ftn.studentservice.web.dto.StudentDTO;
 import com.ftn.studentservice.web.dto.StudentToSyllabusDTO;
@@ -17,9 +18,11 @@ import java.util.List;
 public class StudentController {
 
     private final IStudentService iStudentService;
+    private final IEnrollmentService iEnrollmentService;
 
-    public StudentController(IStudentService iStudentService) {
+    public StudentController(IStudentService iStudentService, IEnrollmentService iEnrollmentService) {
         this.iStudentService = iStudentService;
+        this.iEnrollmentService = iEnrollmentService;
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
@@ -45,8 +48,8 @@ public class StudentController {
     }
 
     @PreAuthorize(value = "hasAnyRole('STUDENT')")
-    @GetMapping("/{studentId}/semester")
-    public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@PathVariable Long studentId) {
+    @PutMapping(value = "/semester-enrollment")
+    public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@RequestBody Long studentId) {
         return new ResponseEntity<>(iStudentService.enrollmentOnNextSemester(studentId), HttpStatus.OK);
     }
 
@@ -54,5 +57,11 @@ public class StudentController {
     @GetMapping("/new")
     public ResponseEntity<List<StudentDTO>> getNewStudents() {
         return new ResponseEntity<>(iStudentService.findNewStudents(), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping(value = "/{studentId}/finished-exams")
+    public ResponseEntity<Integer> getFinishedExams(@PathVariable Long studentId){
+        return new ResponseEntity<>(iEnrollmentService.getFinishedExams(studentId).size(), HttpStatus.OK);
     }
 }
