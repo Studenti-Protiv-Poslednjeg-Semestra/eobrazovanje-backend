@@ -2,6 +2,7 @@ package com.ftn.studentservice.web.controller;
 
 import com.ftn.studentservice.service.IStudentService;
 import com.ftn.studentservice.web.dto.StudentDTO;
+import com.ftn.studentservice.web.dto.StudentToSyllabusDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,9 @@ public class StudentController {
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
-    @PostMapping("/{studentId}/syllabus/{syllabusId}")
-    public ResponseEntity<StudentDTO> addStudentToSyllabus(@PathVariable Long studentId, @PathVariable Long syllabusId) {
-        return new ResponseEntity<>(iStudentService.addStudentToSyllabus(studentId, syllabusId), HttpStatus.OK);
+    @PostMapping("/syllabus")
+    public ResponseEntity<StudentDTO> addStudentToSyllabus(@RequestBody StudentToSyllabusDTO studentToSyllabusDTO) {
+        return new ResponseEntity<>(iStudentService.addStudentToSyllabus(studentToSyllabusDTO.getStudentId(), studentToSyllabusDTO.getSyllabusId()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -44,7 +45,7 @@ public class StudentController {
     }
 
     @PreAuthorize(value = "hasAnyRole('STUDENT')")
-    @PutMapping("/{studentId}/semester")
+    @GetMapping("/{studentId}/semester")
     public ResponseEntity<StudentDTO> enrollmentOnNextSemester(@PathVariable Long studentId) {
         return new ResponseEntity<>(iStudentService.enrollmentOnNextSemester(studentId), HttpStatus.OK);
     }

@@ -2,6 +2,7 @@ package com.ftn.studentservice.web.controller;
 
 import com.ftn.studentservice.service.ITeacherService;
 import com.ftn.studentservice.web.dto.TeacherDTO;
+import com.ftn.studentservice.web.dto.TeacherToSubjectDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,14 +27,14 @@ public class TeacherController {
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
-    @PutMapping(value = "/{teacherId}/professor/subjects/{subjectId}")
-    public ResponseEntity<TeacherDTO> addProfessorToSubject(@PathVariable(name = "teacherId") Long teacherId, @PathVariable(name = "subjectId") Long subjectId){
-        return new ResponseEntity<>(iTeacherService.addProfessorToSubject(teacherId, subjectId), HttpStatus.OK);
+    @PutMapping(value = "/professor/subjects")
+    public ResponseEntity<TeacherDTO> addProfessorToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO){
+        return new ResponseEntity<>(iTeacherService.addProfessorToSubject(teacherToSubjectDTO.getTeacherId(), teacherToSubjectDTO.getSubjectId()), HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
-    @PutMapping(value = "/{teacherId}/assistant/subjects/{subjectId}")
-    public ResponseEntity<TeacherDTO> addAssistantToSubject(@PathVariable(name = "teacherId") Long teacherId, @PathVariable(name = "subjectId") Long subjectId){
-        return new ResponseEntity<>(iTeacherService.addAssistantToSubject(teacherId, subjectId), HttpStatus.OK);
+    @PutMapping(value = "/assistant/subjects")
+    public ResponseEntity<TeacherDTO> addAssistantToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO){
+        return new ResponseEntity<>(iTeacherService.addAssistantToSubject(teacherToSubjectDTO.getTeacherId(), teacherToSubjectDTO.getSubjectId()), HttpStatus.OK);
     }
 }
