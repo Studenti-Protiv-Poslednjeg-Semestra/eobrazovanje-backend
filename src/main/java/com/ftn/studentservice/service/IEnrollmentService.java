@@ -8,6 +8,8 @@ public interface IEnrollmentService {
 
     List<Enrollment> findByStudentId(Long id);
 
+    List<Enrollment> getFinishedExams(Long studentId);
+
     Enrollment findOne(Long id);
 
     List<Enrollment> findAll();
