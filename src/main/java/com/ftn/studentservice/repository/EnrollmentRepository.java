@@ -10,5 +10,7 @@ import java.util.List;
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
     List<Enrollment> findByStudentId(Long id);
 
+    Enrollment findByStudentIdAndSubjectId(Long studentId, Long subjectId);
+
     List<Enrollment> findEnrollmentsByStudent_IdAndGradeGreaterThan(Long studentId, Integer grade);
 }

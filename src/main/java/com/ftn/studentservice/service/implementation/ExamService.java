@@ -331,6 +331,24 @@ public class ExamService implements IExamService {
             // updating exam schedule
             exam.setExamSchedule(examScheduleMapper.toEntity(examDTO.getExamScheduleDTO()));
         }
+        // updating enrollment grade if points are entered and student passed the exam (points greater than or equals to 51)
+        if (examDTO.getPoints() != null && examDTO.getPoints() >= 51){
+            Integer points = examDTO.getPoints();
+            Enrollment enrollment = enrollmentService.findByStudentIdAndSubjectId(exam.getStudent().getId(), exam.getExamSchedule().getSubject().getId());
+            if (points >= 51 && points < 61) enrollment.setGrade(6);
+            if (points >= 61 && points < 71) enrollment.setGrade(7);
+            if (points >= 71 && points < 81) enrollment.setGrade(8);
+            if (points >= 81 && points < 91) enrollment.setGrade(9);
+            if (points >= 91) enrollment.setGrade(10);
+            enrollmentService.save(enrollment);
+        }
+        else {
+            // setting enrollment grade back to null (not passed) if there are no points, or they are less than 51
+            Enrollment enrollment = enrollmentService.findByStudentIdAndSubjectId(exam.getStudent().getId(), exam.getExamSchedule().getSubject().getId());
+            enrollment.setGrade(null);
+            enrollmentService.save(enrollment);
+        }
+
         // updating basic info
         exam.setPoints(examDTO.getPoints());
 

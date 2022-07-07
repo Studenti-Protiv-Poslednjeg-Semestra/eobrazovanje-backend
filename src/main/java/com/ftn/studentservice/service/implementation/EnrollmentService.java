@@ -34,6 +34,11 @@ public class EnrollmentService implements IEnrollmentService {
     }
 
     @Override
+    public Enrollment findByStudentIdAndSubjectId(Long studentId, Long subjectId) {
+        return enrollmentRepository.findByStudentIdAndSubjectId(studentId, subjectId);
+    }
+
+    @Override
     public List<Enrollment> findAll() {
         return enrollmentRepository.findAll();
     }

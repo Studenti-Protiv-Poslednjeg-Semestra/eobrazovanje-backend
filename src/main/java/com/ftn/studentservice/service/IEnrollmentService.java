@@ -12,6 +12,8 @@ public interface IEnrollmentService {
 
     Enrollment findOne(Long id);
 
+    Enrollment findByStudentIdAndSubjectId(Long studentId, Long subjectId);
+
     List<Enrollment> findAll();
 
     Enrollment save(Enrollment enrollment);
