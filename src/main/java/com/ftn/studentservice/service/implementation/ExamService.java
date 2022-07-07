@@ -307,7 +307,7 @@ public class ExamService implements IExamService {
 
         // updating student's funds
         student.setFunds(student.getFunds() - this.examRegistrationFee);
-        // studentService.save(student);
+        // studentService.saveMoney(student);
 
         Exam exam = new Exam();
         exam.setExamSchedule(examSchedule);

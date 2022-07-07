@@ -2,6 +2,7 @@ package com.ftn.studentservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -31,4 +32,10 @@ public class Payment {
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
+    public Payment(Double amount, LocalDateTime timestamp, String reasonForPayment, Student student) {
+        this.amount = amount;
+        this.timestamp = timestamp;
+        this.reasonForPayment = reasonForPayment;
+        this.student = student;
+    }
 }

@@ -1,9 +1,6 @@
 package com.ftn.studentservice.service.implementation;
 
-import com.ftn.studentservice.model.Enrollment;
-import com.ftn.studentservice.model.Student;
-import com.ftn.studentservice.model.Subject;
-import com.ftn.studentservice.model.Syllabus;
+import com.ftn.studentservice.model.*;
 import com.ftn.studentservice.repository.EnrollmentRepository;
 import com.ftn.studentservice.repository.MajorRepository;
 import com.ftn.studentservice.repository.StudentRepository;
@@ -16,6 +13,7 @@ import com.ftn.studentservice.web.dto.StudentDTO;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,13 +26,15 @@ public class StudentService implements IStudentService {
     private final SyllabusRepository syllabusRepository;
     private final EnrollmentRepository enrollmentRepository;
     private final MajorRepository majorRepository;
+    private final PaymentService paymentService;
     private final StudentMapper studentMapper;
 
-    public StudentService(StudentRepository studentRepository, SyllabusRepository syllabusRepository, EnrollmentRepository enrollmentRepository, MajorRepository majorRepository, StudentMapper studentMapper) {
+    public StudentService(StudentRepository studentRepository, SyllabusRepository syllabusRepository, EnrollmentRepository enrollmentRepository, MajorRepository majorRepository, PaymentService paymentService, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
         this.syllabusRepository = syllabusRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.majorRepository = majorRepository;
+        this.paymentService = paymentService;
         this.studentMapper = studentMapper;
     }
 
@@ -117,6 +117,8 @@ public class StudentService implements IStudentService {
         if(student.getSemester() < student.getMajor().getDuration())
             student.setSemester(student.getSemester() + 1);
 
+        Payment payment = new Payment(-PRICE, LocalDateTime.now(), "Overa semestra", student);
+        paymentService.save(payment);
 
         Enrollment enrollment;
 
