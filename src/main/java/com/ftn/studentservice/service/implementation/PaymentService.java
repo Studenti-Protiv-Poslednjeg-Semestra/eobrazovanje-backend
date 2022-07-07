@@ -1,15 +1,17 @@
 package com.ftn.studentservice.service.implementation;
 
 import com.ftn.studentservice.model.Payment;
+import com.ftn.studentservice.model.Student;
 import com.ftn.studentservice.repository.PaymentRepository;
+import com.ftn.studentservice.repository.StudentRepository;
 import com.ftn.studentservice.service.IPaymentService;
 import com.ftn.studentservice.util.mapper.PaymentMapper;
 import com.ftn.studentservice.web.dto.PaymentDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import com.ftn.studentservice.web.dto.StudentAddMoneyDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,10 +20,12 @@ import java.util.stream.Collectors;
 public class PaymentService implements IPaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final StudentRepository studentRepository;
     private final PaymentMapper paymentMapper;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper) {
+    public PaymentService(PaymentRepository paymentRepository, StudentRepository studentRepository, PaymentMapper paymentMapper) {
         this.paymentRepository = paymentRepository;
+        this.studentRepository = studentRepository;
         this.paymentMapper = paymentMapper;
     }
 
@@ -43,6 +47,13 @@ public class PaymentService implements IPaymentService {
     @Override
     public Payment save(Payment payment) {
         return paymentRepository.save(payment);
+    }
+
+    @Override
+    public Payment saveMoney(StudentAddMoneyDTO payment) {
+        Student student = studentRepository.findById(payment.getStudentId()).get();
+        Payment payment1 = new Payment(payment.getAmount(), LocalDateTime.now(), payment.getReasonForPayment(), student);
+        return paymentRepository.save(payment1);
     }
 
     @Override
