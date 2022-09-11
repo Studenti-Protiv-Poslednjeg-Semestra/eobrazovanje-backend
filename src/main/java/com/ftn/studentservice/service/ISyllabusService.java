@@ -14,4 +14,6 @@ public interface ISyllabusService {
     Syllabus save(Syllabus syllabus);
 
     void delete(Long id);
+
+    int getRemainingSemesterECTS(Long syllabusId, int semesterNumber);
 }

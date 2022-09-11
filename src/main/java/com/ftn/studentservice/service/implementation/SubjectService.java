@@ -3,26 +3,27 @@ package com.ftn.studentservice.service.implementation;
 import com.ftn.studentservice.model.Subject;
 import com.ftn.studentservice.repository.SubjectRepository;
 import com.ftn.studentservice.service.ISubjectService;
+import com.ftn.studentservice.util.exception.SubjectCreationException;
 import com.ftn.studentservice.util.mapper.SubjectMapper;
 import com.ftn.studentservice.web.dto.SubjectDTO;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SubjectService implements ISubjectService {
 
     private final SubjectRepository subjectRepository;
     private final SubjectMapper subjectMapper;
-
-    public SubjectService(SubjectRepository subjectRepository, SubjectMapper subjectMapper) {
-        this.subjectRepository = subjectRepository;
-        this.subjectMapper = subjectMapper;
-    }
+    private final SyllabusService syllabusService;
     @Override
     public Subject findOne(Long id) {
         return subjectRepository.findById(id).orElse(null);
@@ -39,6 +40,11 @@ public class SubjectService implements ISubjectService {
     }
 
     @Override
+    public List<Subject> findAllBySyllabus_Id(Long syllabusId) {
+        return subjectRepository.findAllBySyllabus_Id(syllabusId);
+    }
+
+    @Override
     public Subject save(Subject subject) {
         return subjectRepository.save(subject);
     }
@@ -50,6 +56,18 @@ public class SubjectService implements ISubjectService {
 
     @Override
     public void createSubject(Subject subject) {
-        subjectRepository.save(subject);
+
+        int remainingSemesterECTS = syllabusService.getRemainingSemesterECTS(
+                subject.getSyllabus().getId(), subject.getSemester());
+
+        if(remainingSemesterECTS < subject.getECTS()) {
+            throw new SubjectCreationException("This Subject must contain <= " + remainingSemesterECTS + " ECTS!");
+        }
+
+        try {
+            subjectRepository.save(subject);
+        } catch (DataIntegrityViolationException ex) {
+            throw new SubjectCreationException("Subject's code already exists, please enter the new Subject code and try again!");
+        }
     }
 }

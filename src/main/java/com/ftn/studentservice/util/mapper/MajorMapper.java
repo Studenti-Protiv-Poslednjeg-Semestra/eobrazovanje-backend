@@ -3,6 +3,7 @@ package com.ftn.studentservice.util.mapper;
 import com.ftn.studentservice.model.Major;
 import com.ftn.studentservice.web.dto.MajorDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 

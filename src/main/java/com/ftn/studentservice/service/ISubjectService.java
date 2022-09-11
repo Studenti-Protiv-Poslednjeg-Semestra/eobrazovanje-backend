@@ -14,6 +14,8 @@ public interface ISubjectService {
 
     List<SubjectDTO> findAll();
 
+    List<Subject> findAllBySyllabus_Id(Long syllabusId);
+
     Subject save(Subject subject);
 
     void delete(Long id);

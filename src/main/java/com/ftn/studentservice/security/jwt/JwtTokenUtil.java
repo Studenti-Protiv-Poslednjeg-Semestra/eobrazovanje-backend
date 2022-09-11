@@ -21,7 +21,7 @@ public class JwtTokenUtil {
     private String jwtSecret;
 
     //Duration of JWT token validation
-    @Value("60000000")
+    @Value("600000000")
     private Long jwtExpirationMs;
 
     // Signature algorithm for signing JWT

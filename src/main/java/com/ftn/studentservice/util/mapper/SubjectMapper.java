@@ -1,7 +1,7 @@
 package com.ftn.studentservice.util.mapper;
 
 import com.ftn.studentservice.model.Subject;
-import com.ftn.studentservice.web.dto.SubjectCreationDTO;
+import com.ftn.studentservice.web.dto.subject.SubjectCreationDTO;
 import com.ftn.studentservice.web.dto.SubjectDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

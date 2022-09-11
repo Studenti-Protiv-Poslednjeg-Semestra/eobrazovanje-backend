@@ -11,5 +11,5 @@ public class MajorDTO {
 
     private Integer duration;
 
-    private Integer totalETCS;
+    private Integer totalECTS;
 }

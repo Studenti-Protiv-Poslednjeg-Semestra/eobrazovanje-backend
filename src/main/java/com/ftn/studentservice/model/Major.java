@@ -27,7 +27,7 @@ public class Major {
     @Column(nullable = false)
     private Integer duration;
 
-    @Column(insertable = false, updatable = false, columnDefinition = "INT AS ((duration / 2) * 60)")
+//    @Column(insertable = false, updatable = false, columnDefinition = "INT AS ((duration / 2) * 60)")
     private Integer totalECTS;
 
     @OneToMany(mappedBy = "major", cascade = CascadeType.REFRESH, orphanRemoval = true)
