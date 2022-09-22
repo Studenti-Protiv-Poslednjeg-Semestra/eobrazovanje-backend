@@ -22,19 +22,25 @@ public class TeacherController {
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<TeacherDTO>> getTeachers(@RequestParam(value = "page") Integer page){
+    public ResponseEntity<List<TeacherDTO>> getTeachers(@RequestParam(value = "page") Integer page) {
         return new ResponseEntity<>(iTeacherService.findAll(page), HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<TeacherDTO> createTeacher(@RequestBody TeacherDTO teacherDTO) {
+        return new ResponseEntity<>(iTeacherService.save(teacherDTO), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PutMapping(value = "/professor/subjects")
-    public ResponseEntity<TeacherDTO> addProfessorToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO){
+    public ResponseEntity<TeacherDTO> addProfessorToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO) {
         return new ResponseEntity<>(iTeacherService.addProfessorToSubject(teacherToSubjectDTO.getTeacherId(), teacherToSubjectDTO.getSubjectId()), HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PutMapping(value = "/assistant/subjects")
-    public ResponseEntity<TeacherDTO> addAssistantToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO){
+    public ResponseEntity<TeacherDTO> addAssistantToSubject(@RequestBody TeacherToSubjectDTO teacherToSubjectDTO) {
         return new ResponseEntity<>(iTeacherService.addAssistantToSubject(teacherToSubjectDTO.getTeacherId(), teacherToSubjectDTO.getSubjectId()), HttpStatus.OK);
     }
 }

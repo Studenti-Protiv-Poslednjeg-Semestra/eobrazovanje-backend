@@ -1,4 +1,5 @@
 package com.ftn.studentservice.service;
+
 import com.ftn.studentservice.model.Teacher;
 import com.ftn.studentservice.web.dto.TeacherDTO;
 
@@ -10,7 +11,7 @@ public interface ITeacherService {
 
     List<TeacherDTO> findAll(Integer page);
 
-    Teacher save(Teacher teacher);
+    TeacherDTO save(TeacherDTO teacher);
 
     TeacherDTO addProfessorToSubject(Long teacherId, Long subjectId);
 
