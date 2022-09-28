@@ -10,7 +10,10 @@ import com.ftn.studentservice.service.ITeacherService;
 import com.ftn.studentservice.util.exception.EntityNotFoundException;
 import com.ftn.studentservice.util.mapper.TeacherMapper;
 import com.ftn.studentservice.web.dto.TeacherDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +48,14 @@ public class TeacherService implements ITeacherService {
     @Override
     public List<TeacherDTO> findAll(Integer page) {
         return teacherRepository.findAll(PageRequest.of(page, SIZE)).stream().map(teacherMapper::toDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<TeacherDTO> findAllByPage(Pageable pageable) {
+        Page<Teacher> teachers = teacherRepository.findAll(pageable);
+        Page<TeacherDTO> teacherDTOS = new PageImpl<>(teachers.getContent(), pageable, teachers.getTotalElements()).map(teacherMapper::toDto);
+
+        return teacherDTOS;
     }
 
     @Override
