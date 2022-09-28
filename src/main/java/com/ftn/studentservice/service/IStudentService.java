@@ -22,5 +22,7 @@ public interface IStudentService {
 
     Student save(Student student);
 
+    StudentDTO create(StudentDTO student);
+
     void delete(Long id);
 }

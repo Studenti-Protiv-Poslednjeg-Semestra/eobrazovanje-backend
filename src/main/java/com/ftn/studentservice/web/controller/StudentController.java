@@ -26,6 +26,12 @@ public class StudentController {
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @PostMapping
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO){
+        return new ResponseEntity<>(iStudentService.create(studentDTO), HttpStatus.CREATED);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PostMapping("/syllabus")
     public ResponseEntity<StudentDTO> addStudentToSyllabus(@RequestBody StudentToSyllabusDTO studentToSyllabusDTO) {
         return new ResponseEntity<>(iStudentService.addStudentToSyllabus(studentToSyllabusDTO.getStudentId(), studentToSyllabusDTO.getSyllabusId()), HttpStatus.OK);
