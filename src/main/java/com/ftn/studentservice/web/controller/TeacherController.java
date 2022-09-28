@@ -3,11 +3,14 @@ package com.ftn.studentservice.web.controller;
 import com.ftn.studentservice.service.ITeacherService;
 import com.ftn.studentservice.web.dto.TeacherDTO;
 import com.ftn.studentservice.web.dto.TeacherToSubjectDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -24,6 +27,13 @@ public class TeacherController {
     @GetMapping
     public ResponseEntity<List<TeacherDTO>> getTeachers(@RequestParam(value = "page") Integer page) {
         return new ResponseEntity<>(iTeacherService.findAll(page), HttpStatus.OK);
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<TeacherDTO>> getAllTeachers(@PathParam(value = "page") Integer page,
+                                                           @PathParam(value = "itemsPerPage") Integer itemsPerPage) {
+        return new ResponseEntity<>(iTeacherService.findAllByPage(PageRequest.of(page, itemsPerPage)), HttpStatus.OK);
     }
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
