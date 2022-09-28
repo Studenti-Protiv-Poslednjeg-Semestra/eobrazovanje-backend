@@ -3,6 +3,8 @@ package com.ftn.studentservice.service.implementation;
 import com.ftn.studentservice.model.Major;
 import com.ftn.studentservice.repository.MajorRepository;
 import com.ftn.studentservice.service.IMajorService;
+import com.ftn.studentservice.util.exception.MajorCreationException;
+import com.ftn.studentservice.util.exception.SubjectCreationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +30,13 @@ public class MajorService implements IMajorService {
 
     @Override
     public Major save(Major major) {
+
+        boolean majorNameConflict = majorRepository.existsByName(major.getName());
+
+        if(majorNameConflict) {
+            throw new MajorCreationException("Major name already exists, please enter the new Major name and try again!");
+        }
+
         return majorRepository.save(major);
     }
 

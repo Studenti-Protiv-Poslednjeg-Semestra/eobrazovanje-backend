@@ -15,7 +15,7 @@ import java.util.Set;
 public class Major {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)

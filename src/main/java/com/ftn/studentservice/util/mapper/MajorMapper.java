@@ -1,6 +1,7 @@
 package com.ftn.studentservice.util.mapper;
 
 import com.ftn.studentservice.model.Major;
+import com.ftn.studentservice.web.dto.MajorCreationDTO;
 import com.ftn.studentservice.web.dto.MajorDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +19,6 @@ public interface MajorMapper {
     List<MajorDTO> toDto(List<Major> entityList);
 
     Major toEntity(MajorDTO majorDTO);
+
+    Major toEntity(MajorCreationDTO majorCreationDTO);
 }
