@@ -52,6 +52,7 @@ public class PaymentService implements IPaymentService {
     @Override
     public Payment saveMoney(StudentAddMoneyDTO payment) {
         Student student = studentRepository.findById(payment.getStudentId()).get();
+        student.setFunds(student.getFunds() + payment.getAmount());
         Payment payment1 = new Payment(payment.getAmount(), LocalDateTime.now(), payment.getReasonForPayment(), student);
         return paymentRepository.save(payment1);
     }

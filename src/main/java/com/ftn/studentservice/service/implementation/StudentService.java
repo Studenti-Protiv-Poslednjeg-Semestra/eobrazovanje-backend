@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -77,6 +78,7 @@ public class StudentService implements IStudentService {
         student.setSemester(1);
         student.setSyllabus(syllabus);
         student.setMajor(syllabus.getMajor());
+        student.setYearOfEnrollment(LocalDate.now());
 
         syllabus.getMajor().getStudents().add(student);
         majorRepository.save(syllabus.getMajor());
