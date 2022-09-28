@@ -1,20 +1,20 @@
 package com.ftn.studentservice.service.implementation;
 
 import com.ftn.studentservice.model.*;
-import com.ftn.studentservice.repository.EnrollmentRepository;
-import com.ftn.studentservice.repository.MajorRepository;
-import com.ftn.studentservice.repository.StudentRepository;
-import com.ftn.studentservice.repository.SyllabusRepository;
+import com.ftn.studentservice.repository.*;
 import com.ftn.studentservice.service.IStudentService;
 import com.ftn.studentservice.util.exception.EntityNotFoundException;
 import com.ftn.studentservice.util.exception.NotEnoughFunds;
 import com.ftn.studentservice.util.mapper.StudentMapper;
 import com.ftn.studentservice.web.dto.StudentDTO;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,14 +28,17 @@ public class StudentService implements IStudentService {
     private final MajorRepository majorRepository;
     private final PaymentService paymentService;
     private final StudentMapper studentMapper;
+    private final AuthorityRepository authorityRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-    public StudentService(StudentRepository studentRepository, SyllabusRepository syllabusRepository, EnrollmentRepository enrollmentRepository, MajorRepository majorRepository, PaymentService paymentService, StudentMapper studentMapper) {
+    public StudentService(StudentRepository studentRepository, SyllabusRepository syllabusRepository, EnrollmentRepository enrollmentRepository, MajorRepository majorRepository, PaymentService paymentService, StudentMapper studentMapper, AuthorityRepository authorityRepository) {
         this.studentRepository = studentRepository;
         this.syllabusRepository = syllabusRepository;
         this.enrollmentRepository = enrollmentRepository;
         this.majorRepository = majorRepository;
         this.paymentService = paymentService;
         this.studentMapper = studentMapper;
+        this.authorityRepository = authorityRepository;
     }
 
     @Override
@@ -142,6 +145,17 @@ public class StudentService implements IStudentService {
     @Override
     public Student save(Student student) {
         return studentRepository.save(student);
+    }
+
+    @Override
+    public StudentDTO create(StudentDTO student) {
+        Student studentForSave = studentMapper.toEntity(student);
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authorityRepository.getAuthorityByName("ROLE_STUDENT"));
+        studentForSave.getUser().setAuthorities(authorities);
+        studentForSave.getUser().setPassword(bCryptPasswordEncoder.encode(student.getUserDTO().getUCN()));
+        Student retVal = studentRepository.save(studentForSave);
+        return studentMapper.toDto(retVal);
     }
 
     @Override

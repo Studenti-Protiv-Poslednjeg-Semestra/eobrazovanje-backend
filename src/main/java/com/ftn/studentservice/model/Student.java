@@ -28,11 +28,10 @@ public class Student {
     @Min(0)
     private Double funds;
 
-    @Min(1)
-    @Column(nullable = false)
+    @Column
     private Integer semester;
 
-    @Column(nullable = false)
+    @Column
     private LocalDate yearOfEnrollment;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
