@@ -16,10 +16,10 @@ import java.util.Set;
 public class Syllabus {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    @Column(insertable = false, updatable = false, columnDefinition="DATE DEFAULT (CURRENT_TIMESTAMP)")
+    @Column(nullable = false)
     private LocalDate yearOfCreation;
 
     @OneToMany(mappedBy = "syllabus", cascade = CascadeType.REFRESH, orphanRemoval = true)

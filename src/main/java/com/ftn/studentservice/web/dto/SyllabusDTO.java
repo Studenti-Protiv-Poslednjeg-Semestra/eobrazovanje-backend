@@ -10,4 +10,5 @@ public class SyllabusDTO {
     private Long id;
     private LocalDate yearOfCreation;
     private MajorDTO majorDTO;
+
 }

@@ -68,7 +68,32 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(exceptionMessage, badRequest);
     }
 
+    @ExceptionHandler(value = {InvalidDateException.class})
+    public ResponseEntity<Object> handleInvalidDateException(InvalidDateException e){
 
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 
+        ExceptionMessage exceptionMessage = new ExceptionMessage(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(exceptionMessage, badRequest);
+    }
+
+    @ExceptionHandler(value = {SyllabusCreationException.class})
+    public ResponseEntity<Object> handleSyllabusCreationException(SyllabusCreationException e){
+
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        ExceptionMessage exceptionMessage = new ExceptionMessage(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+
+        return new ResponseEntity<>(exceptionMessage, badRequest);
+    }
 
 }

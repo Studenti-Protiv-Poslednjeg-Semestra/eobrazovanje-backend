@@ -20,5 +20,4 @@ public interface ISubjectService {
 
     void delete(Long id);
 
-    void createSubject(Subject subject);
 }

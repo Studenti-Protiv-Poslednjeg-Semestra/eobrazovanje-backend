@@ -16,18 +16,16 @@ import java.util.Set;
 public class ResponsibilityDefinition {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     private Subject subject;
 
     @Enumerated(EnumType.STRING)
-    @Column
     private ResponsibilityType responsibilityType;
 
     @OneToMany(mappedBy = "responsibilityDefinition", orphanRemoval = true)
-    private Set<Responsibility> responsibilities;
+    private Set<Responsibility> responsibilities = new LinkedHashSet<>();
 
 }

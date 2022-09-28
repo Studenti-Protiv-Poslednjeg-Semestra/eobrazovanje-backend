@@ -16,4 +16,6 @@ public interface ISyllabusService {
     void delete(Long id);
 
     int getRemainingSemesterECTS(Long syllabusId, int semesterNumber);
+
+    List<Syllabus> findSyllabiByMajorId(Long majorId);
 }

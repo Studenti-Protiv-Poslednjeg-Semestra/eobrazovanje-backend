@@ -1,6 +1,7 @@
 package com.ftn.studentservice.util.mapper;
 
 import com.ftn.studentservice.model.Syllabus;
+import com.ftn.studentservice.web.dto.SyllabusCreationDTO;
 import com.ftn.studentservice.web.dto.SyllabusDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +15,8 @@ public interface SyllabusMapper {
     @Mapping(target = "major", source = "majorDTO")
     Syllabus toEntity(SyllabusDTO syllabusDTO);
 
-    @Mapping(target = "id", source = "id")
-    Syllabus toEntity(Long id);
+    @Mapping(source = "majorId", target = "major.id")
+    @Mapping(source = "yearOfCreation", target = "yearOfCreation")
+    Syllabus toEntity(SyllabusCreationDTO syllabusCreationDTO);
 
 }

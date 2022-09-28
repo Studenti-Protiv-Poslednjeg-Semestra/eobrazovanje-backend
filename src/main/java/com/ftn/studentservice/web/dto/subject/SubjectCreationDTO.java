@@ -1,11 +1,15 @@
 package com.ftn.studentservice.web.dto.subject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ftn.studentservice.model.ResponsibilityType;
 import lombok.Data;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class SubjectCreationDTO {
@@ -34,4 +38,5 @@ public class SubjectCreationDTO {
     @NotNull(message = "Subject must contain Syllabus id!")
     public Long syllabusId;
 
+    public List<ResponsibilityType> responsibilityDefinitions = new ArrayList<>();
 }
