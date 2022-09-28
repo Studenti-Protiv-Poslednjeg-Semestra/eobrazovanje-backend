@@ -4,6 +4,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -47,14 +48,14 @@ public class Student {
     private Set<Enrollment> enrollments = new java.util.LinkedHashSet<>();
 
     @OneToMany(mappedBy = "student", orphanRemoval = true)
-    private Set<Document> documents;
+    private Set<Document> documents = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    private Set<Payment> payments;
+    private Set<Payment> payments = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    private Set<Responsibility> responsibilities;
+    private Set<Responsibility> responsibilities = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REFRESH, orphanRemoval = true)
-    private Set<Exam> exams = new java.util.LinkedHashSet<>();
+    private Set<Exam> exams = new LinkedHashSet<>();
 }

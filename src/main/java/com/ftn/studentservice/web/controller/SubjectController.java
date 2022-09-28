@@ -1,7 +1,9 @@
 package com.ftn.studentservice.web.controller;
 
+import com.ftn.studentservice.model.ResponsibilityType;
 import com.ftn.studentservice.model.Subject;
 import com.ftn.studentservice.service.ISubjectService;
+import com.ftn.studentservice.util.mapper.SubjectMapper;
 import com.ftn.studentservice.util.mapper.SubjectMapperImpl;
 import com.ftn.studentservice.web.dto.ExamScheduleDTO;
 import com.ftn.studentservice.web.dto.subject.SubjectCreationDTO;
@@ -11,9 +13,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +27,7 @@ import java.util.Optional;
 public class SubjectController {
 
     private final ISubjectService subjectService;
-    private final SubjectMapperImpl subjectMapper;
+    private final SubjectMapper subjectMapper;
     private static final Integer SIZE = 10;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -42,7 +46,7 @@ public class SubjectController {
 
         List<Subject> subjects = subjectService.findAllBySyllabus_Id(syllabusId);
 
-        return new ResponseEntity<List<SubjectDTO>>(
+        return new ResponseEntity<>(
                 subjects.stream()
                         .map(subjectMapper::toDto)
                         .toList(),
@@ -53,8 +57,23 @@ public class SubjectController {
     @PostMapping
     public ResponseEntity<?> createSubject(@Valid @RequestBody SubjectCreationDTO subjectCreationDTO) {
         Subject newSubject = subjectMapper.toEntity(subjectCreationDTO);
-        subjectService.createSubject(newSubject);
+        subjectService.save(newSubject);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @DeleteMapping(value = "/{subjectId}")
+    public ResponseEntity<?> deleteSubject(@PathVariable Long subjectId) {
+
+        subjectService.delete(subjectId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("responsibilities")
+    public ResponseEntity<List<String>> getResponsibilities() {
+        return new ResponseEntity<>(Arrays.stream(ResponsibilityType.values()).map(responsibilityType -> responsibilityType.name()).toList(), HttpStatus.OK);
     }
 
 

@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,7 +20,7 @@ import java.util.Set;
 public class Subject {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Code must not be left out!")
@@ -64,13 +66,14 @@ public class Subject {
     @ToString.Exclude
     private Set<Teacher> assistants = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.REFRESH, orphanRemoval = true)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<ResponsibilityDefinition> responsibilityDefinitions = new LinkedHashSet<>();
+    private List<ResponsibilityDefinition> responsibilityDefinitions = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.REFRESH, optional = false)
     @JoinColumn(name = "syllabus_id", nullable = false)
     @ToString.Exclude
     private Syllabus syllabus;
+
 
 }

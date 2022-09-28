@@ -1,6 +1,10 @@
 package com.ftn.studentservice.web.dto;
 
+import com.ftn.studentservice.model.ResponsibilityType;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class SubjectDTO {
