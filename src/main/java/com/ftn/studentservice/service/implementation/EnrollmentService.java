@@ -3,6 +3,8 @@ package com.ftn.studentservice.service.implementation;
 import com.ftn.studentservice.model.Enrollment;
 import com.ftn.studentservice.repository.EnrollmentRepository;
 import com.ftn.studentservice.service.IEnrollmentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,13 @@ public class EnrollmentService implements IEnrollmentService {
     public List<Enrollment> findByStudentId(Long id) {
         List<Enrollment> enrollments = enrollmentRepository.findByStudentId(id);
         return enrollments.isEmpty() ? null : enrollments;
+    }
+
+    @Override
+    public Page<Enrollment> findByStudentId(Long id, PageRequest pageRequest) {
+
+        Page<Enrollment> enrollments = enrollmentRepository.findByStudentId(id, pageRequest);
+        return enrollments;
     }
 
     @Override

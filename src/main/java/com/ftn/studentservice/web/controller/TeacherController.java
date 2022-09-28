@@ -31,8 +31,9 @@ public class TeacherController {
 
     @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @GetMapping(value = "/page")
-    public ResponseEntity<Page<TeacherDTO>> getAllTeachers(@PathParam(value = "page") Integer page,
-                                                           @PathParam(value = "itemsPerPage") Integer itemsPerPage) {
+    public ResponseEntity<Page<TeacherDTO>> getAllTeachers(
+            @PathParam(value = "page") Integer page,
+            @PathParam(value = "itemsPerPage") Integer itemsPerPage) {
         return new ResponseEntity<>(iTeacherService.findAllByPage(PageRequest.of(page, itemsPerPage)), HttpStatus.OK);
     }
 
